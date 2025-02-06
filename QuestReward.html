@@ -1,0 +1,258 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, shrink-to-fit=no">
+    <meta name="color-scheme" content="light only">
+    <title>Quest Rewards | 2004Scape</title>
+    <style>
+        BODY, P, TD { font-family: Arial, Helvetica, sans-serif; font-size: 13px; }
+        .b { border-style: outset; border-width: 3pt; border-color: #373737;}
+        .b2 { border-style: outset; border-width: 3pt; border-color: #570700; }
+        .e { border: 2px solid #382418; }
+        .c { text-decoration: none; }
+        .white { text-decoration: none; color: #FFFFFF; }
+        .red { text-decoration: none; color: #E10505; }
+        .lblue { text-decoration: none; color: #9DB8C3; }
+        .dblue { text-decoration: none; color: #0D6083; }
+        .yellow { text-decoration: none; color: #FFE139; }
+        .green { text-decoration: none; color: #04A800; }
+        .purple { text-decoration: none; color: #C503FD; }
+        .pink { text-decoration: none; color: #FAA8AA; }
+        A.c:hover { text-decoration: underline }
+        A.white:hover { text-decoration: underline }
+        A.red:hover { text-decoration: underline }
+        A.lblue:hover { text-decoration: underline }
+        A.dblue:hover { text-decoration: underline }
+        A.yellow:hover { text-decoration: underline }
+        A.green:hover { text-decoration: underline }
+        A.purple:hover { text-decoration: underline }
+        A.pink:hover { text-decoration: underline }
+
+        /* New class for grayed-out text */
+        .grayed-text {
+            color: #A0A0A0;  /* Light gray color */
+        }
+
+        /* Hidden by default */
+        .p2p {
+            display: none;
+        }
+
+        /* Center the button container */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center; /* Align items horizontally */
+        }
+
+        /* Make sure buttons and images are aligned properly */
+        .button-container div {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the content inside the div */
+        }
+
+        .button-container img {
+            vertical-align: middle; /* Align the image in the middle */
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="/css/site.css">
+</head>
+
+<body bgcolor="black" text="white" link="#90c040" alink="#90c040" vlink="#90c040" topmargin="0" leftmargin="0">
+    <table width="100%" height="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td valign="middle">
+                <center>
+                    <div style="LEFT: 0px; TOP: 0px; WIDTH: 600px; POSITION: relative;">
+                        <!-- Header images -->
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td valign="top"><img src="/img/edge_a.jpg" width="100" height="43" hspace="0" vspace="0"></td>
+                                <td valign="top"><img src="/img/edge_c.jpg" width="400" height="42" hspace="0" vspace="0"></td>
+                                <td valign="top"><img src="/img/edge_d.jpg" width="100" height="43" hspace="0" vspace="0"></td>
+                            </tr>
+                        </table>
+                        <!-- Background table with central content -->
+                        <table width="600" cellpadding="0" cellspacing="0" border="0" background="/img/background2.jpg">
+                            <tr>
+                                <td valign="bottom">
+                                    <center>
+                                        <br>
+                                        <!-- Custom buttons section centered using flexbox -->
+                                        <div class="button-container">
+                                            <div id="button">
+                                                <a href="javascript:void(0);" onclick="toggleQuests('f2p')">
+                                                    <img src="/img/title/blank.gif" width="100" height="45" border="0">
+                                                    <table width="100" height="45" bgcolor="black" cellpadding="2">
+                                                        <tr>
+                                                            <td class="b" bgcolor="#474747" background="/img/stoneback.gif">
+                                                                <center><b>Show F2P Quests</b></center>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </a>
+                                            </div>
+                                            <div id="button2">
+                                                <a href="javascript:void(0);" onclick="toggleQuests('p2p')">
+                                                    <img src="/img/title/blank.gif" width="100" height="45" border="0">
+                                                    <table width="100" height="45" bgcolor="black" cellpadding="2">
+                                                        <tr>
+                                                            <td class="b" bgcolor="#474747" background="/img/stoneback.gif">
+                                                                <center><b>Show P2P Quests</b></center>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <br><br>
+
+                                        <!-- Title -->
+                                        <table width="250" bgcolor="black" cellpadding="4">
+                                            <tr>
+                                                <td class="e">
+                                                    <center>
+                                                        <b>Quest Rewards</b>
+                                                    </center>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br>
+                                        <!-- Quest & Reward Table -->
+                                        <table width="500" bgcolor="black" cellpadding="2">
+                                            <tr>
+                                                <td class="e">
+                                                    <table width="100%" cellspacing="4" cellpadding="8">
+                                                        <!-- Quest Boxes -->
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <!-- F2P Quests -->
+                                                                <div id="f2p1">
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Cook’s Assistant</b><br>
+                                                                        <span class="grayed-text">300 Cooking XP</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Sheep Shearer</b><br>
+                                                                        <span class="grayed-text">150 Crafting XP, 60 Coins</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Romeo & Juliet</b><br>
+                                                                        <span class="grayed-text">Completion Only (No XP)</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Doric’s Quest</b><br>
+                                                                        <span class="grayed-text">1,300 Mining XP, Use of Doric’s Anvils</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>The Restless Ghost</b><br>
+                                                                        <span class="grayed-text">1,125 Prayer XP</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Rune Mysteries</b><br>
+                                                                        <span class="grayed-text">Access to Runecrafting</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Goblin Diplomacy</b><br>
+                                                                        <span class="grayed-text">200 Crafting XP, 5 Quest Points</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Ernest the Chicken</b><br>
+                                                                        <span class="grayed-text">300 Coins</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Knight’s Sword</b><br>
+                                                                        <span class="grayed-text">12,725 Smithing XP</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Witch’s Potion</b><br>
+                                                                        <span class="grayed-text">325 Magic XP</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Imp Catcher</b><br>
+                                                                        <span class="grayed-text">875 Magic XP, Amulet of Accuracy</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Vampire Slayer</b><br>
+                                                                        <span class="grayed-text">4,825 Attack XP</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Pirate’s Treasure</b><br>
+                                                                        <span class="grayed-text">450 Coins, One-Eyed Hector’s Treasure</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Prince Ali Rescue</b><br>
+                                                                        <span class="grayed-text">Free Access Through Al Kharid Gate</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Shield of Arrav</b><br>
+                                                                        <span class="grayed-text">600 Coins (From Selling Reward)</span>
+                                                                    </div>
+                                                                    <div style="border: 2px solid #382418; padding: 8px; margin-bottom: 5px;">
+                                                                        <b>Dragon Slayer</b><br>
+                                                                        <span class="grayed-text">18,650 Strength XP, 18,650 Defence XP, Ability to Wear Rune
+                                                                            Platebody</span>
+                                                                    </div>
+                                                                </div>
+                                                            <!-- P2P Quests -->
+                                                                <div id="p2p1">
+                                                                </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                        <!-- Footer with edge images -->
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td valign="bottom"><img src="/img/edge_g2.jpg" width="100" height="82" hspace="0" vspace="0"></td>
+                                <td valign="bottom">
+                                    <div align="center" style="font-family:Arial,Helvetica,sans-serif; font-size:11px;">
+                                        <a href="https://2004.lostcity.rs/disclaimer" class="whitelink">View our non-affiliation disclaimer
+                                            here.</a><br>
+                                        Recreated and preserved 2023 - 2025.<br><br>
+                                    </div>
+                                    <img src="/img/edge_c.jpg" width="400" height="42" hspace="0" vspace="0">
+                                </td>
+                                <td valign="bottom"><img src="/img/edge_h2.jpg" width="100" height="82" hspace="0" vspace="0"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </center>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+        function toggleQuests(type) {
+            var f2pQuests = document.querySelectorAll('[id^="f2p"]');
+            var p2pQuests = document.querySelectorAll('[id^="p2p"]');
+
+            if (type === 'f2p') {
+                f2pQuests.forEach(function (quest) {
+                    quest.style.display = 'block';
+                });
+                p2pQuests.forEach(function (quest) {
+                    quest.style.display = 'none';
+                });
+            } else if (type === 'p2p') {
+                f2pQuests.forEach(function (quest) {
+                    quest.style.display = 'none';
+                });
+                p2pQuests.forEach(function (quest) {
+                    quest.style.display = 'block';
+                });
+            }
+        }
+    </script>
+</body>
+</html>
