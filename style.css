@@ -71,7 +71,7 @@
         }
 
         .stone-box {
-            background: url('/img/stoneback.gif');
+            background: url('img/stoneback.gif');
             padding: 10px;
             text-align: center;
         }
