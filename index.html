@@ -6,27 +6,6 @@
     <meta name="color-scheme" content="light only">
     <title>Drop Tables | 2004Scape</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Loading spinner */
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
 </head>
 <body bgcolor="black" text="white" link="#90c040" alink="#90c040" vlink="#90c040" topmargin="0" leftmargin="0">
     <table width="100%" height="100%" cellpadding="0" cellspacing="0">
@@ -56,21 +35,43 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <br>
                                         <!-- Loading Spinner -->
                                         <div id="loader" class="loader hidden"></div>
-                                        <!-- Search Bar -->
-                                        <div class="search-bar">
-                                            <input type="text" id="searchInput" placeholder="Search for an item..." oninput="searchItems()" disabled>
-                                            <div id="searchResults" class="search-results"></div>
-                                        </div>
+                                        <div id="loadingText" class="loading-text hidden">Loading drop tables...</div>
+                                        <!-- Search Bar and Dropdown in Stone Boxes -->
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <table width=200 bgcolor=black cellpadding=4>
+                                                        <tr>
+                                                            <td class=b bgcolor=#474747 background=/img/stoneback.gif>
+                                                                <div class="stone-box">
+                                                                    <b>Search for an item</b><br>
+                                                                    <input type="text" id="searchInput" placeholder="Search..." oninput="searchItems()" disabled>
+                                                                    <div id="searchResults" class="search-results" background=/img/title/shinystonered.jpg></div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td>
+                                                    <table width=200 bgcolor=black cellpadding=4>
+                                                        <tr>
+                                                            <td class=b bgcolor=#474747 background=/img/stoneback.gif>
+                                                                <div class="stone-box">
+                                                                    <b>Select a monster</b><br>
+                                                                    <select id="monsterDropdown" onchange="loadDropTable()" disabled>
+                                                                        <option value="">Select...</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
                                         <br>
-                                        <!-- Dropdown for Monster Selection -->
-                                        <div class="dropdown">
-                                            <select id="monsterDropdown" onchange="loadDropTable()" disabled>
-                                                <option value="">Select a monster...</option>
-                                            </select>
-                                        </div>
                                         <!-- Drop Table -->
                                         <table width="500" bgcolor="black" cellpadding="2">
                                             <tr>
@@ -121,10 +122,10 @@
         // Base URL for raw GitHub content
         const baseUrl = "https://raw.githubusercontent.com/2004Scape/Server/main/data/src/scripts/drop%20tables/scripts";
 
-        // List of .rs2 files (from the PDF)
+        // List of .rs2 files (updated with correct files)
         const dropFiles = [
             "bandit.rs2",
-            "bandit_camp_leaders.rs2",
+            "bandit_camp_leaders.rs2", // Updated file
             "barbarian.rs2",
             "bear.rs2",
             "black_dragon.rs2",
@@ -182,7 +183,7 @@
             "unicorn.rs2",
             "white_knight.rs2",
             "wizard.rs2",
-            "yanille_soldier_tower_guard.rs2",
+            "yanille_soldier_tower_guard.rs2", // Updated file
             "zombie.rs2"
         ];
 
@@ -192,11 +193,13 @@
         // Function to show the loader
         function showLoader() {
             document.getElementById("loader").classList.remove("hidden");
+            document.getElementById("loadingText").classList.remove("hidden");
         }
 
         // Function to hide the loader
         function hideLoader() {
             document.getElementById("loader").classList.add("hidden");
+            document.getElementById("loadingText").classList.add("hidden");
         }
 
         // Function to enable the search bar and dropdown
@@ -250,10 +253,11 @@
             return drops;
         }
 
-        // Function to calculate drop rate
+        // Function to calculate drop rate as 1/*** (rounded to nearest whole number)
         function calculateRate(probability) {
             const rate = 128 / probability;
-            return rate === Math.floor(rate) ? `1/${rate}` : `${probability}/128`;
+            const roundedRate = Math.round(rate); // Round to the nearest whole number
+            return `1/${roundedRate}`;
         }
 
         // Function to format item names
