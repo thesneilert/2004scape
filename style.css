@@ -209,16 +209,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        .search-result-item {
-            padding: 5px;
-            cursor: pointer;
-            color: white;
-        }
-        
-        .search-result-item:hover {
-            background-color: #666;
-        }
-        
         .highlight {
             color: #04A800;
         }
