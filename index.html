@@ -59,10 +59,9 @@
                                                                     <input type="text" id="searchInput"
                                                                         placeholder="Search..." oninput="searchItems()"
                                                                         disabled>
-                                                                    <div style="font-size:11px;">Click the monster to
-                                                                        view the table</div>
+                                                                    Click the monster to view the table
                                                                     <div id="searchResults" class="search-results"
-                                                                        background=img/shinystonered.jpg></div>
+                                                                        background=img/title/shinystonered.jpg></div>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -79,7 +78,6 @@
                                                                         onchange="loadDropTable()" disabled>
                                                                         <option value="">Select...</option>
                                                                     </select>
-                                                                    <br><br>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -179,13 +177,13 @@
         ];
 
         const customItems = {
-            "~randomherb": {
+            "random_randomherb": {
                 name: "Random Herb",
-                image: "guam_leaf.png" // Placeholder image for random herbs
+                image: "unidentified_guam_leaf.png"
             },
-            "~randomjewel": {
+            "random_randomjewel": {
                 name: "Random Jewel",
-                image: "dragonstone.png" // Placeholder image for random jewels
+                image: "dragonstone.png"
             },
         };
 
@@ -248,10 +246,10 @@
 
                 // Extract item and quantity if the line contains "obj_add("
                 if (line.includes("obj_add(")) {
-                    const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]*)/);
+                    const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]+)/);
                     if (itemMatch) {
                         const item = itemMatch[1].trim();
-                        const quantity = itemMatch[2].trim() || "1"; // Default to 1 if quantity is missing
+                        const quantity = itemMatch[2].trim();
 
                         // Skip unwanted items like "npc_param(death_drop)"
                         if (item === "npc_param(death_drop)") {
@@ -289,7 +287,7 @@
 
         // Function to format item names
         function formatItemName(item) {
-            // Check if the item has a custom name in the customItems object
+            // Check if the item has a custom name
             const lowerCaseItem = item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
             if (customItems[lowerCaseItem]) {
                 return customItems[lowerCaseItem].name;
@@ -333,7 +331,7 @@
 
                 drops.forEach(drop => {
                     const lowerCaseItem = drop.item.toLowerCase();
-                    const quantity = parseInt(drop.quantity, 10) || 1; // Default to 1 if quantity is NaN
+                    const quantity = parseInt(drop.quantity, 10);
                     const rate = drop.rate;
 
                     // Handle coins separately
@@ -435,25 +433,34 @@
                 aggregatedDrops.forEach(drop => {
                     const row = document.createElement("tr");
 
-                    // Format the item name using the customItems object
-                    const formattedItemName = formatItemName(drop.item);
+                    // Check if the item is dynamic (starts with "Random" or contains "~")
+                    const isDynamicItem = drop.item.startsWith("Random") || drop.item.startsWith("~");
 
                     // Create the image cell
                     const imageCell = document.createElement("td");
-                    const lowerCaseItem = drop.item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
-                    const imageName = customItems[lowerCaseItem] ? customItems[lowerCaseItem].image : `${drop.item.toLowerCase()}.png`;
-                    const imageUrl = `https://lostcity.markets/img/items/${imageName}`;
+                    if (!isDynamicItem) {
+                        // Check if the item has a custom image
+                        const lowerCaseItem = drop.item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
+                        const imageName = customItems[lowerCaseItem] ? customItems[lowerCaseItem].image : `${drop.item.toLowerCase()}.png`;
 
-                    const imageElement = document.createElement("img");
-                    imageElement.src = imageUrl;
-                    imageElement.alt = formattedItemName;
-                    imageElement.width = 32;
-                    imageElement.height = 32;
-                    imageCell.appendChild(imageElement);
+                        // Construct the image URL
+                        const imageUrl = `https://lostcity.markets/img/items/${imageName}`;
+
+                        // Create the image element
+                        const imageElement = document.createElement("img");
+                        imageElement.src = imageUrl;
+                        imageElement.alt = drop.item;
+                        imageElement.width = 32; // Set the width of the image
+                        imageElement.height = 32; // Set the height of the image
+                        imageCell.appendChild(imageElement);
+                    } else {
+                        // Leave the image cell empty for dynamic items
+                        imageCell.textContent = ""; // Or use a placeholder like "N/A"
+                    }
 
                     // Create the item name cell
                     const itemCell = document.createElement("td");
-                    itemCell.textContent = formattedItemName;
+                    itemCell.textContent = formatItemName(drop.item);
 
                     // Create the quantity cell
                     const quantityCell = document.createElement("td");
@@ -545,6 +552,8 @@
                 searchResults.appendChild(noResults);
             }
         }
+
+
 
         // Initialize the page
         window.onload = async () => {
