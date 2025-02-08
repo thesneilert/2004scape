@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.7, shrink-to-fit=no">
@@ -8,6 +9,7 @@
     <link rel="icon" type="image/x-icon" href="img\tabicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body bgcolor="black" text="white" link="#90c040" alink="#90c040" vlink="#90c040" topmargin="0" leftmargin="0">
     <table width="100%" height="100%" cellpadding="0" cellspacing="0">
         <tr>
@@ -16,9 +18,12 @@
                     <div style="LEFT: 0px; TOP: 0px; WIDTH: 600px; POSITION: relative;">
                         <table cellpadding="0" cellspacing="0">
                             <tr>
-                                <td valign="top"><img src="img/edge_a.jpg" width="100" height="43" hspace="0" vspace="0"></td>
-                                <td valign="top"><img src="img/edge_c.jpg" width="400" height="42" hspace="0" vspace="0"></td>
-                                <td valign="top"><img src="img/edge_d.jpg" width="100" height="43" hspace="0" vspace="0"></td>
+                                <td valign="top"><img src="img/edge_a.jpg" width="100" height="43" hspace="0"
+                                        vspace="0"></td>
+                                <td valign="top"><img src="img/edge_c.jpg" width="400" height="42" hspace="0"
+                                        vspace="0"></td>
+                                <td valign="top"><img src="img/edge_d.jpg" width="100" height="43" hspace="0"
+                                        vspace="0"></td>
                             </tr>
                         </table>
                         <table width="600" cellpadding="0" cellspacing="0" border="0" background="img/background2.jpg">
@@ -37,9 +42,11 @@
                                             </tr>
                                         </table>
                                         <!-- Loading Spinner -->
-                                         <br>
+                                        <br>
                                         <div id="loader" class="loader hidden"></div>
-                                        <div id="loadingText" class="loading-text hidden">Loading drop tables... <br>Please hold tight, good things take time!</div>
+                                        <div id="loadingText" class="loading-text hidden">Loading drop tables...
+                                            <br>Please hold tight, good things take time!
+                                        </div>
                                         <!-- Search Bar and Dropdown in Stone Boxes -->
                                         <table>
                                             <tr>
@@ -49,8 +56,12 @@
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
                                                                     <b>Search for an item</b><br>
-                                                                    <input type="text" id="searchInput" placeholder="Search..." oninput="searchItems()" disabled>
-                                                                    <div id="searchResults" class="search-results" background=img/title/shinystonered.jpg></div>
+                                                                    <input type="text" id="searchInput"
+                                                                        placeholder="Search..." oninput="searchItems()"
+                                                                        disabled>
+                                                                    Click the monster to view the table
+                                                                    <div id="searchResults" class="search-results"
+                                                                        background=img/title/shinystonered.jpg></div>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -63,7 +74,8 @@
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
                                                                     <b>Select a monster</b><br>
-                                                                    <select id="monsterDropdown" onchange="loadDropTable()" disabled>
+                                                                    <select id="monsterDropdown"
+                                                                        onchange="loadDropTable()" disabled>
                                                                         <option value="">Select...</option>
                                                                     </select>
                                                                 </div>
@@ -102,7 +114,8 @@
                         <!-- Footer with edge images -->
                         <table cellpadding="0" cellspacing="0">
                             <tr>
-                                <td valign="bottom"><img src="img/edge_g2.jpg" width="100" height="82" hspace="0" vspace="0"></td>
+                                <td valign="bottom"><img src="img/edge_g2.jpg" width="100" height="82" hspace="0"
+                                        vspace="0"></td>
                                 <td valign="bottom">
                                     <div align="center" style="font-family:Arial,Helvetica,sans-serif; font-size:11px;">
                                         <br>
@@ -112,7 +125,8 @@
                                     </div>
                                     <img src="img/edge_c.jpg" width="400" height="42" hspace="0" vspace="0">
                                 </td>
-                                <td valign="bottom"><img src="img/edge_h2.jpg" width="100" height="82" hspace="0" vspace="0"></td>
+                                <td valign="bottom"><img src="img/edge_h2.jpg" width="100" height="82" hspace="0"
+                                        vspace="0"></td>
                             </tr>
                         </table>
                     </div>
@@ -127,7 +141,7 @@
 
         // List of .rs2 files (updated with correct files)
         const dropFiles = [
-        "bandit.rs2",
+            "bandit.rs2",
             "barbarian.rs2",
             "bear.rs2",
             "black_knight.rs2",
@@ -161,6 +175,17 @@
             "wizard.rs2",
             "zombie.rs2"
         ];
+
+        const customItems = {
+            "random_randomherb": {
+                name: "Random Herb",
+                image: "unidentified_guam_leaf.png"
+            },
+            "random_randomjewel": {
+                name: "Random Jewel",
+                image: "dragonstone.png"
+            },
+        };
 
         // Cache for storing parsed drop tables
         const dropTablesCache = {};
@@ -204,54 +229,54 @@
 
         // Function to parse a .rs2 file and calculate drop rates
         function parseDropTable(text) {
-    const lines = text.split("\n");
-    const drops = [];
-    let currentProbability = 0;
-    let previousProbability = 0;
+            const lines = text.split("\n");
+            const drops = [];
+            let currentProbability = 0;
+            let previousProbability = 0;
 
-    lines.forEach(line => {
-        // Extract probability if the line contains "if ($random <"
-        if (line.includes("if ($random <")) {
-            const probabilityMatch = line.match(/if \(\$random < (\d+)/);
-            if (probabilityMatch) {
-                previousProbability = currentProbability;
-                currentProbability = parseInt(probabilityMatch[1], 10);
-            }
-        }
-
-        // Extract item and quantity if the line contains "obj_add("
-        if (line.includes("obj_add(")) {
-            const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]+)/);
-            if (itemMatch) {
-                const item = itemMatch[1].trim();
-                const quantity = itemMatch[2].trim();
-
-                // Skip unwanted items like "npc_param(death_drop)"
-                if (item === "npc_param(death_drop)") {
-                    return;
+            lines.forEach(line => {
+                // Extract probability if the line contains "if ($random <"
+                if (line.includes("if ($random <")) {
+                    const probabilityMatch = line.match(/if \(\$random < (\d+)/);
+                    if (probabilityMatch) {
+                        previousProbability = currentProbability;
+                        currentProbability = parseInt(probabilityMatch[1], 10);
+                    }
                 }
 
-                // Handle dynamic items (e.g., ~randomherb, ~randomjewel)
-                if (item.startsWith("~")) {
-                    drops.push({
-                        item: item.replace("~", "Random "), // Format dynamic items
-                        quantity: "1", // Assume quantity 1 for dynamic items
-                        rate: calculateRate(currentProbability - previousProbability),
-                    });
-                } else {
-                    // Handle regular items
-                    drops.push({
-                        item,
-                        quantity,
-                        rate: calculateRate(currentProbability - previousProbability),
-                    });
-                }
-            }
-        }
-    });
+                // Extract item and quantity if the line contains "obj_add("
+                if (line.includes("obj_add(")) {
+                    const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]+)/);
+                    if (itemMatch) {
+                        const item = itemMatch[1].trim();
+                        const quantity = itemMatch[2].trim();
 
-    return drops;
-}
+                        // Skip unwanted items like "npc_param(death_drop)"
+                        if (item === "npc_param(death_drop)") {
+                            return;
+                        }
+
+                        // Handle guaranteed drops (no probability condition)
+                        if (!line.includes("if ($random <")) {
+                            drops.push({
+                                item,
+                                quantity,
+                                rate: "1/1" // Guaranteed drop
+                            });
+                        } else {
+                            // Handle regular drops with probability
+                            drops.push({
+                                item,
+                                quantity,
+                                rate: calculateRate(currentProbability - previousProbability),
+                            });
+                        }
+                    }
+                }
+            });
+
+            return drops;
+        }
 
         // Function to calculate drop rate as 1/*** (rounded to nearest whole number)
         function calculateRate(probability) {
@@ -262,6 +287,12 @@
 
         // Function to format item names
         function formatItemName(item) {
+            // Check if the item has a custom name
+            const lowerCaseItem = item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
+            if (customItems[lowerCaseItem]) {
+                return customItems[lowerCaseItem].name;
+            }
+
             // Replace underscores with spaces and capitalize first letter of each word
             let formattedItem = item
                 .replace(/_/g, " ")
@@ -284,74 +315,184 @@
 
         // Function to load the drop table for the selected monster
         async function loadDropTable() {
-    const dropdown = document.getElementById("monsterDropdown");
-    const selectedFile = dropdown.value;
-    const tableBody = document.querySelector("#dropTable tbody");
+            const dropdown = document.getElementById("monsterDropdown");
+            const selectedFile = dropdown.value;
+            const tableBody = document.querySelector("#dropTable tbody");
 
-    // Clear existing rows
-    tableBody.innerHTML = "";
+            // Clear existing rows
+            tableBody.innerHTML = "";
 
-    if (selectedFile) {
-        const drops = await fetchDropTable(selectedFile);
-        drops.forEach(drop => {
-            const row = document.createElement("tr");
+            if (selectedFile) {
+                const drops = await fetchDropTable(selectedFile);
 
-            // Check if the item is dynamic (starts with "Random" or contains "~")
-            const isDynamicItem = drop.item.startsWith("Random") || drop.item.startsWith("~");
+                // Aggregate items by name, quantity, and rate
+                const aggregatedDrops = [];
+                const itemMap = new Map();
 
-            // Create the image cell
-            const imageCell = document.createElement("td");
-            if (!isDynamicItem) {
-                // Construct the image URL for non-dynamic items
-                const imageUrl = `https://lostcity.markets/img/items/${drop.item.toLowerCase()}.png`;
+                drops.forEach(drop => {
+                    const lowerCaseItem = drop.item.toLowerCase();
+                    const quantity = parseInt(drop.quantity, 10);
+                    const rate = drop.rate;
 
-                // Create the image element
-                const imageElement = document.createElement("img");
-                imageElement.src = imageUrl;
-                imageElement.alt = drop.item;
-                imageElement.width = 32; // Set the width of the image
-                imageElement.height = 32; // Set the height of the image
-                imageCell.appendChild(imageElement);
-            } else {
-                // Leave the image cell empty for dynamic items
-                imageCell.textContent = ""; // Or use a placeholder like "N/A"
-            }
+                    // Handle coins separately
+                    if (lowerCaseItem === "coins") {
+                        if (!itemMap.has("coins")) {
+                            itemMap.set("coins", {
+                                item: "Coins",
+                                quantities: [],
+                                rates: []
+                            });
+                        }
+                        const coinEntry = itemMap.get("coins");
+                        coinEntry.quantities.push(quantity);
+                        coinEntry.rates.push(parseInt(rate.split('/')[1], 10));
+                    } else if (lowerCaseItem.endsWith("rune")) {
+                        // Handle runes
+                        if (!itemMap.has(lowerCaseItem)) {
+                            itemMap.set(lowerCaseItem, {
+                                item: drop.item,
+                                quantities: [],
+                                rates: []
+                            });
+                        }
+                        const runeEntry = itemMap.get(lowerCaseItem);
+                        runeEntry.quantities.push(quantity);
+                        runeEntry.rates.push(parseInt(rate.split('/')[1], 10));
+                    } else {
+                        // Handle other items
+                        const key = `${lowerCaseItem}-${quantity}-${rate}`;
+                        if (!itemMap.has(key)) {
+                            itemMap.set(key, {
+                                item: drop.item,
+                                quantity: quantity,
+                                rate: rate,
+                                count: 1
+                            });
+                        } else {
+                            const existingEntry = itemMap.get(key);
+                            existingEntry.count += 1;
+                        }
+                    }
+                });
 
-            // Create the item name cell
-            const itemCell = document.createElement("td");
-            itemCell.textContent = formatItemName(drop.item);
+                // Add aggregated coins to the drops
+                if (itemMap.has("coins")) {
+                    const coinEntry = itemMap.get("coins");
+                    const minQuantity = Math.min(...coinEntry.quantities);
+                    const maxQuantity = Math.max(...coinEntry.quantities);
+                    const minRate = Math.min(...coinEntry.rates);
+                    const maxRate = Math.max(...coinEntry.rates);
 
-            // Create the quantity cell
-            const quantityCell = document.createElement("td");
-            quantityCell.textContent = drop.quantity;
-
-            // Create the rate cell
-            const rateCell = document.createElement("td");
-            rateCell.textContent = drop.rate;
-
-            // Append all cells to the row
-            row.appendChild(imageCell);
-            row.appendChild(itemCell);
-            row.appendChild(quantityCell);
-            row.appendChild(rateCell);
-
-            // Append the row to the table body
-            tableBody.appendChild(row);
-        });
-
-        // Highlight the searched item in the table
-        const searchInput = document.getElementById("searchInput").value.toLowerCase();
-        if (searchInput) {
-            const rows = tableBody.querySelectorAll("tr");
-            rows.forEach(row => {
-                const itemName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
-                if (itemName.includes(searchInput)) {
-                    row.classList.add("highlight");
+                    aggregatedDrops.push({
+                        item: "Coins",
+                        quantity: `${minQuantity}-${maxQuantity}`,
+                        rate: `${minRate}-${maxRate}/128`
+                    });
                 }
-            });
+
+                // Add aggregated runes to the drops
+                itemMap.forEach((value, key) => {
+                    if (key !== "coins" && value.quantities) {
+                        const minQuantity = Math.min(...value.quantities);
+                        const maxQuantity = Math.max(...value.quantities);
+                        const minRate = Math.min(...value.rates);
+                        const maxRate = Math.max(...value.rates);
+
+                        aggregatedDrops.push({
+                            item: value.item,
+                            quantity: `${minQuantity}-${maxQuantity}`,
+                            rate: `${minRate}-${maxRate}/128`
+                        });
+                    } else if (key !== "coins") {
+                        if (value.count > 1) {
+                            // If there are multiple entries with the same quantity and rate, show it once
+                            aggregatedDrops.push({
+                                item: value.item,
+                                quantity: value.quantity,
+                                rate: value.rate
+                            });
+                        } else {
+                            // Otherwise, add the drop as is
+                            aggregatedDrops.push({
+                                item: value.item,
+                                quantity: value.quantity,
+                                rate: value.rate
+                            });
+                        }
+                    }
+                });
+
+                // Sort drops by rate
+                aggregatedDrops.sort((a, b) => {
+                    const rateA = parseInt(a.rate.split('/')[1], 10);
+                    const rateB = parseInt(b.rate.split('/')[1], 10);
+                    return rateA - rateB;
+                });
+
+                // Populate the table
+                aggregatedDrops.forEach(drop => {
+                    const row = document.createElement("tr");
+
+                    // Check if the item is dynamic (starts with "Random" or contains "~")
+                    const isDynamicItem = drop.item.startsWith("Random") || drop.item.startsWith("~");
+
+                    // Create the image cell
+                    const imageCell = document.createElement("td");
+                    if (!isDynamicItem) {
+                        // Check if the item has a custom image
+                        const lowerCaseItem = drop.item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
+                        const imageName = customItems[lowerCaseItem] ? customItems[lowerCaseItem].image : `${drop.item.toLowerCase()}.png`;
+
+                        // Construct the image URL
+                        const imageUrl = `https://lostcity.markets/img/items/${imageName}`;
+
+                        // Create the image element
+                        const imageElement = document.createElement("img");
+                        imageElement.src = imageUrl;
+                        imageElement.alt = drop.item;
+                        imageElement.width = 32; // Set the width of the image
+                        imageElement.height = 32; // Set the height of the image
+                        imageCell.appendChild(imageElement);
+                    } else {
+                        // Leave the image cell empty for dynamic items
+                        imageCell.textContent = ""; // Or use a placeholder like "N/A"
+                    }
+
+                    // Create the item name cell
+                    const itemCell = document.createElement("td");
+                    itemCell.textContent = formatItemName(drop.item);
+
+                    // Create the quantity cell
+                    const quantityCell = document.createElement("td");
+                    quantityCell.textContent = drop.quantity;
+
+                    // Create the rate cell
+                    const rateCell = document.createElement("td");
+                    rateCell.textContent = drop.rate;
+
+                    // Append all cells to the row
+                    row.appendChild(imageCell);
+                    row.appendChild(itemCell);
+                    row.appendChild(quantityCell);
+                    row.appendChild(rateCell);
+
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+
+                // Highlight the searched item in the table
+                const searchInput = document.getElementById("searchInput").value.toLowerCase();
+                if (searchInput) {
+                    const rows = tableBody.querySelectorAll("tr");
+                    rows.forEach(row => {
+                        const itemName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+                        if (itemName.includes(searchInput)) {
+                            row.classList.add("highlight");
+                        }
+                    });
+                }
+            }
         }
-    }
-}
 
         // Function to populate the dropdown with monster names
         function populateDropdown() {
@@ -364,53 +505,53 @@
             });
         }
 
-// Function to search for items and display matching monsters
-async function searchItems() {
-    const searchInput = document.getElementById("searchInput").value.toLowerCase();
-    const searchResults = document.getElementById("searchResults");
-    searchResults.innerHTML = "";
+        // Function to search for items and display matching monsters
+        async function searchItems() {
+            const searchInput = document.getElementById("searchInput").value.toLowerCase();
+            const searchResults = document.getElementById("searchResults");
+            searchResults.innerHTML = "";
 
-    if (searchInput.length < 2) return; // Only search if input is at least 2 characters
+            if (searchInput.length < 2) return; // Only search if input is at least 2 characters
 
-    const results = [];
+            const results = [];
 
-    // Normalize the search input by removing spaces and underscores (e.g., "iron full helm" → "ironfullhelm")
-    const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
+            // Normalize the search input by removing spaces and underscores (e.g., "iron full helm" → "ironfullhelm")
+            const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
 
-    for (const file of dropFiles) {
-        const drops = await fetchDropTable(file);
-        const matchingDrops = drops.filter(drop => {
-            // Normalize the item name by removing spaces and underscores (e.g., "iron_full_helm" → "ironfullhelm")
-            const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
-            return normalizedItemName.includes(normalizedSearchInput);
-        });
+            for (const file of dropFiles) {
+                const drops = await fetchDropTable(file);
+                const matchingDrops = drops.filter(drop => {
+                    // Normalize the item name by removing spaces and underscores (e.g., "iron_full_helm" → "ironfullhelm")
+                    const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
+                    return normalizedItemName.includes(normalizedSearchInput);
+                });
 
-        if (matchingDrops.length > 0) {
-            results.push({
-                monster: formatMonsterName(file.replace(".rs2", "")),
-                file: file
-            });
+                if (matchingDrops.length > 0) {
+                    results.push({
+                        monster: formatMonsterName(file.replace(".rs2", "")),
+                        file: file
+                    });
+                }
+            }
+
+            if (results.length > 0) {
+                results.forEach(result => {
+                    const resultItem = document.createElement("div");
+                    resultItem.className = "search-result-item";
+                    resultItem.textContent = result.monster;
+                    resultItem.onclick = () => {
+                        document.getElementById("monsterDropdown").value = result.file;
+                        loadDropTable();
+                    };
+                    searchResults.appendChild(resultItem);
+                });
+            } else {
+                const noResults = document.createElement("div");
+                noResults.className = "search-result-item";
+                noResults.textContent = "No results found.";
+                searchResults.appendChild(noResults);
+            }
         }
-    }
-
-    if (results.length > 0) {
-        results.forEach(result => {
-            const resultItem = document.createElement("div");
-            resultItem.className = "search-result-item";
-            resultItem.textContent = result.monster;
-            resultItem.onclick = () => {
-                document.getElementById("monsterDropdown").value = result.file;
-                loadDropTable();
-            };
-            searchResults.appendChild(resultItem);
-        });
-    } else {
-        const noResults = document.createElement("div");
-        noResults.className = "search-result-item";
-        noResults.textContent = "No results found.";
-        searchResults.appendChild(noResults);
-    }
-}
 
 
 
@@ -429,4 +570,5 @@ async function searchItems() {
         };
     </script>
 </body>
+
 </html>
