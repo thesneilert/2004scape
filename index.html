@@ -302,6 +302,18 @@
                     `;
                     tableBody.appendChild(row);
                 });
+
+                // Highlight the searched item in the table
+                const searchInput = document.getElementById("searchInput").value.toLowerCase();
+                if (searchInput) {
+                    const rows = tableBody.querySelectorAll("tr");
+                    rows.forEach(row => {
+                        const itemName = row.querySelector("td").textContent.toLowerCase();
+                        if (itemName.includes(searchInput)) {
+                            row.classList.add("highlight");
+                        }
+                    });
+                }
             }
         }
 
