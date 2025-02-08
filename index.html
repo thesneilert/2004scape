@@ -79,6 +79,7 @@
                                                     <table width="100%" cellspacing="4" cellpadding="8" id="dropTable">
                                                         <thead>
                                                             <tr>
+                                                                <th>Image</th>
                                                                 <th>Item</th>
                                                                 <th>Quantity</th>
                                                                 <th>Rate</th>
@@ -229,29 +230,54 @@
 
         // Function to parse a .rs2 file and calculate drop rates
         function parseDropTable(text) {
-            const lines = text.split("\n");
-            const drops = [];
-            let currentProbability = 0;
+    const lines = text.split("\n");
+    const drops = [];
+    let currentProbability = 0;
+    let previousProbability = 0;
 
-            lines.forEach(line => {
-                if (line.includes("if ($random <")) {
-                    const probability = parseInt(line.match(/if \(\$random < (\d+)/)[1], 10);
-                    currentProbability = probability;
-                } else if (line.includes("obj_add(")) {
-                    const match = line.match(/obj_add\([^,]+,\s*([^,]+),\s*(\d+)/);
-                    if (match) {
-                        const item = match[1].trim();
-                        const quantity = parseInt(match[2], 10);
-                        const rate = calculateRate(currentProbability);
-                        if (item !== "npc_param(death_drop)") {
-                            drops.push({ item, quantity, rate });
-                        }
-                    }
-                }
-            });
-
-            return drops;
+    lines.forEach(line => {
+        // Extract probability if the line contains "if ($random <"
+        if (line.includes("if ($random <")) {
+            const probabilityMatch = line.match(/if \(\$random < (\d+)/);
+            if (probabilityMatch) {
+                previousProbability = currentProbability;
+                currentProbability = parseInt(probabilityMatch[1], 10);
+            }
         }
+
+        // Extract item and quantity if the line contains "obj_add("
+        if (line.includes("obj_add(")) {
+            const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]+)/);
+            if (itemMatch) {
+                const item = itemMatch[1].trim();
+                const quantity = itemMatch[2].trim();
+
+                // Skip unwanted items like "npc_param(death_drop)"
+                if (item === "npc_param(death_drop)") {
+                    return;
+                }
+
+                // Handle dynamic items (e.g., ~randomherb, ~randomjewel)
+                if (item.startsWith("~")) {
+                    drops.push({
+                        item: item.replace("~", "Random "), // Format dynamic items
+                        quantity: "1", // Assume quantity 1 for dynamic items
+                        rate: calculateRate(currentProbability - previousProbability),
+                    });
+                } else {
+                    // Handle regular items
+                    drops.push({
+                        item,
+                        quantity,
+                        rate: calculateRate(currentProbability - previousProbability),
+                    });
+                }
+            }
+        }
+    });
+
+    return drops;
+}
 
         // Function to calculate drop rate as 1/*** (rounded to nearest whole number)
         function calculateRate(probability) {
@@ -284,38 +310,74 @@
 
         // Function to load the drop table for the selected monster
         async function loadDropTable() {
-            const dropdown = document.getElementById("monsterDropdown");
-            const selectedFile = dropdown.value;
-            const tableBody = document.querySelector("#dropTable tbody");
+    const dropdown = document.getElementById("monsterDropdown");
+    const selectedFile = dropdown.value;
+    const tableBody = document.querySelector("#dropTable tbody");
 
-            // Clear existing rows
-            tableBody.innerHTML = "";
+    // Clear existing rows
+    tableBody.innerHTML = "";
 
-            if (selectedFile) {
-                const drops = await fetchDropTable(selectedFile);
-                drops.forEach(drop => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${formatItemName(drop.item)}</td>
-                        <td>${drop.quantity}</td>
-                        <td>${drop.rate}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
+    if (selectedFile) {
+        const drops = await fetchDropTable(selectedFile);
+        drops.forEach(drop => {
+            const row = document.createElement("tr");
 
-                // Highlight the searched item in the table
-                const searchInput = document.getElementById("searchInput").value.toLowerCase();
-                if (searchInput) {
-                    const rows = tableBody.querySelectorAll("tr");
-                    rows.forEach(row => {
-                        const itemName = row.querySelector("td").textContent.toLowerCase();
-                        if (itemName.includes(searchInput)) {
-                            row.classList.add("highlight");
-                        }
-                    });
-                }
+            // Check if the item is dynamic (starts with "Random" or contains "~")
+            const isDynamicItem = drop.item.startsWith("Random") || drop.item.startsWith("~");
+
+            // Create the image cell
+            const imageCell = document.createElement("td");
+            if (!isDynamicItem) {
+                // Construct the image URL for non-dynamic items
+                const imageUrl = `https://lostcity.markets/img/items/${drop.item.toLowerCase()}.png`;
+
+                // Create the image element
+                const imageElement = document.createElement("img");
+                imageElement.src = imageUrl;
+                imageElement.alt = drop.item;
+                imageElement.width = 32; // Set the width of the image
+                imageElement.height = 32; // Set the height of the image
+                imageCell.appendChild(imageElement);
+            } else {
+                // Leave the image cell empty for dynamic items
+                imageCell.textContent = ""; // Or use a placeholder like "N/A"
             }
+
+            // Create the item name cell
+            const itemCell = document.createElement("td");
+            itemCell.textContent = formatItemName(drop.item);
+
+            // Create the quantity cell
+            const quantityCell = document.createElement("td");
+            quantityCell.textContent = drop.quantity;
+
+            // Create the rate cell
+            const rateCell = document.createElement("td");
+            rateCell.textContent = drop.rate;
+
+            // Append all cells to the row
+            row.appendChild(imageCell);
+            row.appendChild(itemCell);
+            row.appendChild(quantityCell);
+            row.appendChild(rateCell);
+
+            // Append the row to the table body
+            tableBody.appendChild(row);
+        });
+
+        // Highlight the searched item in the table
+        const searchInput = document.getElementById("searchInput").value.toLowerCase();
+        if (searchInput) {
+            const rows = tableBody.querySelectorAll("tr");
+            rows.forEach(row => {
+                const itemName = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+                if (itemName.includes(searchInput)) {
+                    row.classList.add("highlight");
+                }
+            });
         }
+    }
+}
 
         // Function to populate the dropdown with monster names
         function populateDropdown() {

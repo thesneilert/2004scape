@@ -31,6 +31,10 @@
             margin-bottom: 10px;
         }
 
+        #dropTable img {
+            vertical-align: middle;
+        }
+
 
         /* RuneScape 2004 Theme for Dropdown and Search Bar */
         .search-bar input {
@@ -207,15 +211,6 @@
         .loading-text {
             text-align: center;
             margin-top: 10px;
-        }
-        
-        .search-results {
-            max-height: 150px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            background-color: #474747;
-            padding: 5px;
-            margin-top: 5px;
         }
         
         .search-result-item {
