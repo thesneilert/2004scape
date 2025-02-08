@@ -364,48 +364,55 @@
             });
         }
 
-        // Function to search for items and display matching monsters
-        async function searchItems() {
-            const searchInput = document.getElementById("searchInput").value.toLowerCase();
-            const searchResults = document.getElementById("searchResults");
-            searchResults.innerHTML = "";
+// Function to search for items and display matching monsters
+async function searchItems() {
+    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    const searchResults = document.getElementById("searchResults");
+    searchResults.innerHTML = "";
 
-            if (searchInput.length < 2) return; // Only search if input is at least 2 characters
+    if (searchInput.length < 2) return; // Only search if input is at least 2 characters
 
-            const results = [];
+    const results = [];
 
-            for (const file of dropFiles) {
-                const drops = await fetchDropTable(file);
-                const matchingDrops = drops.filter(drop => {
-                    const formattedItem = drop.item.replace(/_/g, " ").toLowerCase();
-                    return formattedItem.includes(searchInput);
-                });
-                if (matchingDrops.length > 0) {
-                    results.push({
-                        monster: formatMonsterName(file.replace(".rs2", "")),
-                        file: file
-                    });
-                }
-            }
+    // Normalize the search input by removing spaces and underscores (e.g., "iron full helm" → "ironfullhelm")
+    const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
 
-            if (results.length > 0) {
-                results.forEach(result => {
-                    const resultItem = document.createElement("div");
-                    resultItem.className = "search-result-item";
-                    resultItem.textContent = result.monster;
-                    resultItem.onclick = () => {
-                        document.getElementById("monsterDropdown").value = result.file;
-                        loadDropTable();
-                    };
-                    searchResults.appendChild(resultItem);
-                });
-            } else {
-                const noResults = document.createElement("div");
-                noResults.className = "search-result-item";
-                noResults.textContent = "No results found.";
-                searchResults.appendChild(noResults);
-            }
+    for (const file of dropFiles) {
+        const drops = await fetchDropTable(file);
+        const matchingDrops = drops.filter(drop => {
+            // Normalize the item name by removing spaces and underscores (e.g., "iron_full_helm" → "ironfullhelm")
+            const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
+            return normalizedItemName.includes(normalizedSearchInput);
+        });
+
+        if (matchingDrops.length > 0) {
+            results.push({
+                monster: formatMonsterName(file.replace(".rs2", "")),
+                file: file
+            });
         }
+    }
+
+    if (results.length > 0) {
+        results.forEach(result => {
+            const resultItem = document.createElement("div");
+            resultItem.className = "search-result-item";
+            resultItem.textContent = result.monster;
+            resultItem.onclick = () => {
+                document.getElementById("monsterDropdown").value = result.file;
+                loadDropTable();
+            };
+            searchResults.appendChild(resultItem);
+        });
+    } else {
+        const noResults = document.createElement("div");
+        noResults.className = "search-result-item";
+        noResults.textContent = "No results found.";
+        searchResults.appendChild(noResults);
+    }
+}
+
+
 
         // Initialize the page
         window.onload = async () => {
