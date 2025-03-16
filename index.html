@@ -180,11 +180,11 @@
         const customItems = {
             "~randomherb": {
                 name: "Random Herb",
-                image: "guam_leaf.png" // Placeholder image for random herbs
+                image: "guam_leaf.webp" // Placeholder image for random herbs
             },
             "~randomjewel": {
                 name: "Random Jewel",
-                image: "dragonstone.png" // Placeholder image for random jewels
+                image: "dragonstone.webp" // Placeholder image for random jewels
             },
             // Add more random items as needed
         };
@@ -450,11 +450,11 @@
                     const imageCell = document.createElement("td");
 
                     // Check if the item has a custom image in the customItems object
-                    const imageName = drop.item.toLowerCase() === "random herb" ? "guam_leaf.png" :
-                        drop.item.toLowerCase() === "random jewel" ? "dragonstone.png" :
+                    const imageName = drop.item.toLowerCase() === "random herb" ? "guam_leaf.webp" :
+                        drop.item.toLowerCase() === "random jewel" ? "dragonstone.webp" :
                             (customItems[drop.item.toLowerCase()]
                                 ? customItems[drop.item.toLowerCase()].image
-                                : `${drop.item.toLowerCase().replace(/ /g, "_")}.png`);
+                                : `${drop.item.toLowerCase().replace(/ /g, "_")}.webp`);
 
                     const imageUrl = `https://lostcity.markets/img/items/${imageName}`;
 
