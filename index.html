@@ -360,21 +360,21 @@
         }
 
         function formatItemName(item) {
-    // Check if this is a custom item first
-    if (customItems[item.toLowerCase()]) {
-        return customItems[item.toLowerCase()].name;
-    }
+            // Check if this is a custom item first
+            if (customItems[item.toLowerCase()]) {
+                return customItems[item.toLowerCase()].name;
+            }
 
-    let formattedItem = item
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, char => char.toUpperCase());
+            let formattedItem = item
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, char => char.toUpperCase());
 
-    if (formattedItem.toLowerCase().endsWith("rune")) {
-        formattedItem = formattedItem.replace(/(\w+)rune/i, "$1 Rune");
-    }
+            if (formattedItem.toLowerCase().endsWith("rune")) {
+                formattedItem = formattedItem.replace(/(\w+)rune/i, "$1 Rune");
+            }
 
-    return formattedItem;
-}
+            return formattedItem;
+        }
 
         function formatMonsterName(monster) {
             return monster
@@ -509,7 +509,7 @@
                     } else if (drop.item.toLowerCase() === "random jewel") {
                         imageUrl = `https://lostcity.markets/img/items/dragonstone.webp`;
                     } else if (drop.item.toLowerCase() === "defence potion(3)") {
-                        imageUrl = `https://lostcity.markets/img/items/3dose1defense.webp`;
+                        imageUrl = `https://lostcity.markets/img/items/dragonstone.webp`;
                     } else {
                         const imageName = customItems[drop.item.toLowerCase()]
                             ? customItems[drop.item.toLowerCase()].image
