@@ -332,6 +332,13 @@
                                 quantity: "1",
                                 rate: calculateRate(currentProbability - previousProbability),
                             });
+                        } else if (customItems[item.toLowerCase()]) {
+                            // Handle custom items that don't start with ~
+                            drops.push({
+                                item: customItems[item.toLowerCase()].name,
+                                quantity,
+                                rate: calculateRate(currentProbability - previousProbability),
+                            });
                         } else {
                             drops.push({
                                 item,
@@ -353,16 +360,21 @@
         }
 
         function formatItemName(item) {
-            let formattedItem = item
-                .replace(/_/g, " ")
-                .replace(/\b\w/g, char => char.toUpperCase());
+    // Check if this is a custom item first
+    if (customItems[item.toLowerCase()]) {
+        return customItems[item.toLowerCase()].name;
+    }
 
-            if (formattedItem.toLowerCase().endsWith("rune")) {
-                formattedItem = formattedItem.replace(/(\w+)rune/i, "$1 Rune");
-            }
+    let formattedItem = item
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, char => char.toUpperCase());
 
-            return formattedItem;
-        }
+    if (formattedItem.toLowerCase().endsWith("rune")) {
+        formattedItem = formattedItem.replace(/(\w+)rune/i, "$1 Rune");
+    }
+
+    return formattedItem;
+}
 
         function formatMonsterName(monster) {
             return monster
@@ -496,6 +508,8 @@
                         imageUrl = `https://lostcity.markets/img/items/guam_leaf.webp`;
                     } else if (drop.item.toLowerCase() === "random jewel") {
                         imageUrl = `https://lostcity.markets/img/items/dragonstone.webp`;
+                    } else if (drop.item.toLowerCase() === "defence potion(3)") {
+                        imageUrl = `https://lostcity.markets/img/items/3dose1defense.webp`;
                     } else {
                         const imageName = customItems[drop.item.toLowerCase()]
                             ? customItems[drop.item.toLowerCase()].image
