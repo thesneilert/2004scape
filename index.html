@@ -18,9 +18,12 @@
                     <div style="LEFT: 0px; TOP: 0px; WIDTH: 600px; POSITION: relative;">
                         <table cellpadding="0" cellspacing="0">
                             <tr>
-                                <td valign="top"><img src="img/edge_a.jpg" width="100" height="43" hspace="0" vspace="0"></td>
-                                <td valign="top"><img src="img/edge_c.jpg" width="400" height="42" hspace="0" vspace="0"></td>
-                                <td valign="top"><img src="img/edge_d.jpg" width="100" height="43" hspace="0" vspace="0"></td>
+                                <td valign="top"><img src="img/edge_a.jpg" width="100" height="43" hspace="0"
+                                        vspace="0"></td>
+                                <td valign="top"><img src="img/edge_c.jpg" width="400" height="42" hspace="0"
+                                        vspace="0"></td>
+                                <td valign="top"><img src="img/edge_d.jpg" width="100" height="43" hspace="0"
+                                        vspace="0"></td>
                             </tr>
                         </table>
                         <table width="600" cellpadding="0" cellspacing="0" border="0" background="img/background2.jpg">
@@ -44,6 +47,21 @@
                                         <div id="loadingText" class="loading-text hidden">Loading drop tables...
                                             <br>Please hold tight, good things take time!
                                         </div>
+                                        <!-- Membership Toggle - MOVED TO TOP -->
+                                        <table width=200 bgcolor=black cellpadding=4>
+                                            <tr>
+                                                <td class=b bgcolor=#474747 background=img/stoneback.gif>
+                                                    <div class="stone-box">
+                                                        <b>Membership</b><br>
+                                                        <select id="membershipToggle" onchange="toggleMembership()">
+                                                            <option value="f2p">Free-to-Play</option>
+                                                            <option value="p2p">Members</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br>
                                         <!-- Search Bar and Dropdown in Stone Boxes -->
                                         <table>
                                             <tr>
@@ -53,8 +71,11 @@
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
                                                                     <b>Search for an item</b><br>
-                                                                    <input type="text" id="searchInput" placeholder="Search..." oninput="searchItems()" disabled>
-                                                                    <div id="searchResults" class="search-results" background=img/title/shinystonered.jpg></div>
+                                                                    <input type="text" id="searchInput"
+                                                                        placeholder="Search..." oninput="searchItems()"
+                                                                        disabled>
+                                                                    <div id="searchResults" class="search-results"
+                                                                        background=img/title/shinystonered.jpg></div>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -67,28 +88,14 @@
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
                                                                     <b>Select a monster</b><br>
-                                                                    <select id="monsterDropdown" onchange="loadDropTable()" disabled>
+                                                                    <select id="monsterDropdown"
+                                                                        onchange="loadDropTable()" disabled>
                                                                         <option value="">Select...</option>
                                                                     </select>
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <!-- Membership Toggle -->
-                                        <br>
-                                        <table width=200 bgcolor=black cellpadding=4>
-                                            <tr>
-                                                <td class=b bgcolor=#474747 background=img/stoneback.gif>
-                                                    <div class="stone-box">
-                                                        <b>Membership</b><br>
-                                                        <select id="membershipToggle" onchange="toggleMembership()">
-                                                            <option value="f2p">Free-to-Play</option>
-                                                            <option value="p2p">Members</option>
-                                                        </select>
-                                                    </div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -121,7 +128,8 @@
                         <!-- Footer with edge images -->
                         <table cellpadding="0" cellspacing="0">
                             <tr>
-                                <td valign="bottom"><img src="img/edge_g2.jpg" width="100" height="82" hspace="0" vspace="0"></td>
+                                <td valign="bottom"><img src="img/edge_g2.jpg" width="100" height="82" hspace="0"
+                                        vspace="0"></td>
                                 <td valign="bottom">
                                     <div align="center" style="font-family:Arial,Helvetica,sans-serif; font-size:11px;">
                                         <br>
@@ -131,7 +139,8 @@
                                     </div>
                                     <img src="img/edge_c.jpg" width="400" height="42" hspace="0" vspace="0">
                                 </td>
-                                <td valign="bottom"><img src="img/edge_h2.jpg" width="100" height="82" hspace="0" vspace="0"></td>
+                                <td valign="bottom"><img src="img/edge_h2.jpg" width="100" height="82" hspace="0"
+                                        vspace="0"></td>
                             </tr>
                         </table>
                     </div>
@@ -217,15 +226,23 @@
         let activeDropFiles = [...f2pDropFiles];
 
         const customItems = {
-            "~randomherb": {
-                name: "Random Herb",
-                image: "guam_leaf.webp"
-            },
-            "~randomjewel": {
-                name: "Random Jewel",
-                image: "dragonstone.webp"
-            },
-        };
+    "~randomherb": {
+        name: "Random Herb",
+        image: "guam_leaf.webp"
+    },
+    "~randomjewel": {
+        name: "Random Jewel",
+        image: "dragonstone.webp"
+    },
+    "~ultrarare_getitem": {
+        name: "Rare Drop Table",
+        image: "dragon_sq_shield.png"
+    },
+    "3dose1defense": {
+        name: "Defence Potion(3)",
+        image: "3dose1defense.webp"
+    }
+};
 
         // Cache for storing parsed drop tables
         const dropTablesCache = {};
@@ -257,7 +274,7 @@
             } else {
                 activeDropFiles = [...p2pDropFiles];
             }
-            
+
             populateDropdown();
             document.getElementById("monsterDropdown").value = "";
             document.querySelector("#dropTable tbody").innerHTML = "";
@@ -281,53 +298,62 @@
                 return [];
             }
         }
- 
+
         // Function to parse a .rs2 file and calculate drop rates
         function parseDropTable(text) {
-            const lines = text.split("\n");
-            const drops = [];
-            let currentProbability = 0;
-            let previousProbability = 0;
+    const lines = text.split("\n");
+    const drops = [];
+    let currentProbability = 0;
+    let previousProbability = 0;
 
-            lines.forEach(line => {
-                if (line.includes("if ($random <")) {
-                    const probabilityMatch = line.match(/if \(\$random < (\d+)/);
-                    if (probabilityMatch) {
-                        previousProbability = currentProbability;
-                        currentProbability = parseInt(probabilityMatch[1], 10);
-                    }
-                }
-
-                if (line.includes("obj_add(")) {
-                    const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]+)/);
-                    if (itemMatch) {
-                        const item = itemMatch[1].trim();
-                        const quantity = itemMatch[2].trim();
-
-                        if (item === "npc_param(death_drop)") {
-                            return;
-                        }
-
-                        if (item.startsWith("~")) {
-                            const formattedItem = customItems[item] ? customItems[item].name : item.replace("~", "Random ");
-                            drops.push({
-                                item: formattedItem,
-                                quantity: "1",
-                                rate: calculateRate(currentProbability - previousProbability),
-                            });
-                        } else {
-                            drops.push({
-                                item,
-                                quantity,
-                                rate: calculateRate(currentProbability - previousProbability),
-                            });
-                        }
-                    }
-                }
-            });
-
-            return drops;
+    lines.forEach(line => {
+        if (line.includes("if ($random <")) {
+            const probabilityMatch = line.match(/if \(\$random < (\d+)/);
+            if (probabilityMatch) {
+                previousProbability = currentProbability;
+                currentProbability = parseInt(probabilityMatch[1], 10);
+            }
         }
+
+        if (line.includes("obj_add(")) {
+            const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]+)/);
+            if (itemMatch) {
+                const item = itemMatch[1].trim();
+                const quantity = itemMatch[2].trim();
+
+                if (item === "npc_param(death_drop)") {
+                    return;
+                }
+
+                // Check customItems for all items, not just those starting with ~
+                const customItem = customItems[item.toLowerCase()];
+                if (customItem) {
+                    drops.push({
+                        item: customItem.name,
+                        quantity: "1",
+                        rate: calculateRate(currentProbability - previousProbability),
+                    });
+                }
+                else if (item.startsWith("~")) {
+                    const formattedItem = customItems[item] ? customItems[item].name : item.replace("~", "Random ");
+                    drops.push({
+                        item: formattedItem,
+                        quantity: "1",
+                        rate: calculateRate(currentProbability - previousProbability),
+                    });
+                } else {
+                    drops.push({
+                        item,
+                        quantity,
+                        rate: calculateRate(currentProbability - previousProbability),
+                    });
+                }
+            }
+        }
+    });
+
+    return drops;
+}
 
         function calculateRate(probability) {
             const rate = 128 / probability;
@@ -336,16 +362,22 @@
         }
 
         function formatItemName(item) {
-            let formattedItem = item
-                .replace(/_/g, " ")
-                .replace(/\b\w/g, char => char.toUpperCase());
+    // First check if it's a custom item
+    const customItem = customItems[item.toLowerCase()];
+    if (customItem) {
+        return customItem.name;
+    }
 
-            if (formattedItem.toLowerCase().endsWith("rune")) {
-                formattedItem = formattedItem.replace(/(\w+)rune/i, "$1 Rune");
-            }
+    let formattedItem = item
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, char => char.toUpperCase());
 
-            return formattedItem;
-        }
+    if (formattedItem.toLowerCase().endsWith("rune")) {
+        formattedItem = formattedItem.replace(/(\w+)rune/i, "$1 Rune");
+    }
+
+    return formattedItem;
+}
 
         function formatMonsterName(monster) {
             return monster
@@ -468,18 +500,20 @@
                     const formattedItemName = formatItemName(drop.item);
 
                     const imageCell = document.createElement("td");
-                    
+
                     // Special handling for coins image
                     let imageUrl;
                     if (drop.item.toLowerCase() === "coins") {
                         imageUrl = "https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651";
+                    } else if (drop.item.toLowerCase() === "rare drop table") {
+                        imageUrl = "https://oldschool.runescape.wiki/images/Shield_left_half.png?f410d";
                     } else if (drop.item.toLowerCase() === "random herb") {
                         imageUrl = `https://lostcity.markets/img/items/guam_leaf.webp`;
                     } else if (drop.item.toLowerCase() === "random jewel") {
                         imageUrl = `https://lostcity.markets/img/items/dragonstone.webp`;
                     } else {
-                        const imageName = customItems[drop.item.toLowerCase()] 
-                            ? customItems[drop.item.toLowerCase()].image 
+                        const imageName = customItems[drop.item.toLowerCase()]
+                            ? customItems[drop.item.toLowerCase()].image
                             : `${drop.item.toLowerCase().replace(/ /g, "_")}.webp`;
                         imageUrl = `https://lostcity.markets/img/items/${imageName}`;
                     }
@@ -489,7 +523,7 @@
                     imageElement.alt = formattedItemName;
                     imageElement.width = 32;
                     imageElement.height = 32;
-                    imageElement.onerror = function() {
+                    imageElement.onerror = function () {
                         // Fallback to a generic image if the specific one isn't found
                         this.src = "https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651";
                     };
@@ -528,12 +562,12 @@
         function populateDropdown() {
             const dropdown = document.getElementById("monsterDropdown");
             dropdown.innerHTML = "";
-            
+
             const defaultOption = document.createElement("option");
             defaultOption.value = "";
             defaultOption.textContent = "Select...";
             dropdown.appendChild(defaultOption);
-            
+
             activeDropFiles.forEach(file => {
                 const option = document.createElement("option");
                 option.value = file;
@@ -598,4 +632,5 @@
         };
     </script>
 </body>
+
 </html>
