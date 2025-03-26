@@ -226,23 +226,23 @@
         let activeDropFiles = [...f2pDropFiles];
 
         const customItems = {
-    "~randomherb": {
-        name: "Random Herb",
-        image: "guam_leaf.webp"
-    },
-    "~randomjewel": {
-        name: "Random Jewel",
-        image: "dragonstone.webp"
-    },
-    "~ultrarare_getitem": {
-        name: "Rare Drop Table",
-        image: "dragon_sq_shield.png"
-    },
-    "3dose1defense": {
-        name: "Defence Potion(3)",
-        image: "3dose1defense.webp"
-    }
-};
+            "~randomherb": {
+                name: "Random Herb",
+                image: "guam_leaf.webp"
+            },
+            "~randomjewel": {
+                name: "Random Jewel",
+                image: "dragonstone.webp"
+            },
+            "~ultrarare_getitem": {
+                name: "Rare Drop Table",
+                image: "dragon_sq_shield.png"
+            },
+            "3dose1defense": {
+                name: "Defence Potion(3)",
+                image: "defence_potion.webp"
+            }
+        };
 
         // Cache for storing parsed drop tables
         const dropTablesCache = {};
@@ -301,59 +301,50 @@
 
         // Function to parse a .rs2 file and calculate drop rates
         function parseDropTable(text) {
-    const lines = text.split("\n");
-    const drops = [];
-    let currentProbability = 0;
-    let previousProbability = 0;
+            const lines = text.split("\n");
+            const drops = [];
+            let currentProbability = 0;
+            let previousProbability = 0;
 
-    lines.forEach(line => {
-        if (line.includes("if ($random <")) {
-            const probabilityMatch = line.match(/if \(\$random < (\d+)/);
-            if (probabilityMatch) {
-                previousProbability = currentProbability;
-                currentProbability = parseInt(probabilityMatch[1], 10);
-            }
+            lines.forEach(line => {
+                if (line.includes("if ($random <")) {
+                    const probabilityMatch = line.match(/if \(\$random < (\d+)/);
+                    if (probabilityMatch) {
+                        previousProbability = currentProbability;
+                        currentProbability = parseInt(probabilityMatch[1], 10);
+                    }
+                }
+
+                if (line.includes("obj_add(")) {
+                    const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]+)/);
+                    if (itemMatch) {
+                        const item = itemMatch[1].trim();
+                        const quantity = itemMatch[2].trim();
+
+                        if (item === "npc_param(death_drop)") {
+                            return;
+                        }
+
+                        if (item.startsWith("~")) {
+                            const formattedItem = customItems[item] ? customItems[item].name : item.replace("~", "Random ");
+                            drops.push({
+                                item: formattedItem,
+                                quantity: "1",
+                                rate: calculateRate(currentProbability - previousProbability),
+                            });
+                        } else {
+                            drops.push({
+                                item,
+                                quantity,
+                                rate: calculateRate(currentProbability - previousProbability),
+                            });
+                        }
+                    }
+                }
+            });
+
+            return drops;
         }
-
-        if (line.includes("obj_add(")) {
-            const itemMatch = line.match(/obj_add\([^,]+,\s*([^,]+),\s*([^,]+)/);
-            if (itemMatch) {
-                const item = itemMatch[1].trim();
-                const quantity = itemMatch[2].trim();
-
-                if (item === "npc_param(death_drop)") {
-                    return;
-                }
-
-                // Check customItems for all items, not just those starting with ~
-                const customItem = customItems[item.toLowerCase()];
-                if (customItem) {
-                    drops.push({
-                        item: customItem.name,
-                        quantity: "1",
-                        rate: calculateRate(currentProbability - previousProbability),
-                    });
-                }
-                else if (item.startsWith("~")) {
-                    const formattedItem = customItems[item] ? customItems[item].name : item.replace("~", "Random ");
-                    drops.push({
-                        item: formattedItem,
-                        quantity: "1",
-                        rate: calculateRate(currentProbability - previousProbability),
-                    });
-                } else {
-                    drops.push({
-                        item,
-                        quantity,
-                        rate: calculateRate(currentProbability - previousProbability),
-                    });
-                }
-            }
-        }
-    });
-
-    return drops;
-}
 
         function calculateRate(probability) {
             const rate = 128 / probability;
@@ -362,22 +353,16 @@
         }
 
         function formatItemName(item) {
-    // First check if it's a custom item
-    const customItem = customItems[item.toLowerCase()];
-    if (customItem) {
-        return customItem.name;
-    }
+            let formattedItem = item
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, char => char.toUpperCase());
 
-    let formattedItem = item
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, char => char.toUpperCase());
+            if (formattedItem.toLowerCase().endsWith("rune")) {
+                formattedItem = formattedItem.replace(/(\w+)rune/i, "$1 Rune");
+            }
 
-    if (formattedItem.toLowerCase().endsWith("rune")) {
-        formattedItem = formattedItem.replace(/(\w+)rune/i, "$1 Rune");
-    }
-
-    return formattedItem;
-}
+            return formattedItem;
+        }
 
         function formatMonsterName(monster) {
             return monster
