@@ -302,6 +302,23 @@
             let currentProbability = 0;
             let previousProbability = 0;
 
+            // First check for tertiary drops at the top level
+            const tertiaryDrops = [];
+            const tertiaryRegex = /~trail_(\w+)cluedrop\((\d+)/g;
+            let match;
+            while ((match = tertiaryRegex.exec(text)) !== null) {
+                const clueType = match[1];
+                const rate = match[2];
+                const itemKey = `~trail_${clueType}cluedrop`;
+                if (customItems[itemKey]) {
+                    tertiaryDrops.push({
+                        item: customItems[itemKey].name,
+                        quantity: "1",
+                        rate: `1/${rate}`
+                    });
+                }
+            }
+
             lines.forEach(line => {
                 if (line.includes("if ($random <")) {
                     const probabilityMatch = line.match(/if \(\$random < (\d+)/);
@@ -346,7 +363,8 @@
                 }
             });
 
-            return drops;
+            // Add tertiary drops at the beginning of the drops array
+            return [...tertiaryDrops, ...drops];
         }
 
         function calculateRate(probability) {
@@ -498,17 +516,20 @@
                     let imageUrl;
                     if (drop.item.toLowerCase() === "coins") {
                         imageUrl = "https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651";
+                    } else if (drop.item.toLowerCase().includes("clue scroll")) {
+                        imageUrl = "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a";
                     } else if (drop.item.toLowerCase() === "rare drop table") {
-                        imageUrl = "https://oldschool.runescape.wiki/images/Shield_left_half.png?f410d";
+                        imageUrl = "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00";
                     } else if (drop.item.toLowerCase() === "random herb") {
                         imageUrl = `https://lostcity.markets/img/items/guam_leaf.webp`;
                     } else if (drop.item.toLowerCase() === "random jewel") {
                         imageUrl = `https://lostcity.markets/img/items/dragonstone.webp`;
                     } else if (drop.item.toLowerCase() === "defence potion(3)") {
-                        imageUrl = `https://lostcity.markets/img/items/dragonstone.webp`;
+                        imageUrl = `https://lostcity.markets/img/items/3dose1defense.webp`;
                     } else if (drop.item.toLowerCase() === "strength potion(2)") {
                         imageUrl = `https://lostcity.markets/img/items/2dose1strength.webp`;
-
+                    } else if (drop.item.toLowerCase() === "strength potion(2)") {
+                        imageUrl = `https://lostcity.markets/img/items/2dose1strength.webp`;
 
                     } else {
                         const imageName = customItems[drop.item.toLowerCase()]
