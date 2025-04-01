@@ -225,23 +225,19 @@
         // Current active drop files (default to F2P)
         let activeDropFiles = [...f2pDropFiles];
 
-        const customItems = {
-            "~randomherb": {
-                name: "Random Herb",
-                image: "guam_leaf.webp"
-            },
-            "~randomjewel": {
-                name: "Random Jewel",
-                image: "dragonstone.webp"
-            },
-            "~ultrarare_getitem": {
-                name: "Rare Drop Table",
-                image: "dragon_sq_shield.png"
-            },
-            "3dose1defense": {
-                name: "Defence Potion(3)",
-                image: "3dose1defense.webp"
-            }
+
+        this.customItems = {
+            "~randomherb": { name: "Random Herb", image: "guam_leaf.webp" },
+            "~randomjewel": { name: "Random Jewel", image: "dragonstone.webp" },
+            "~ultrarare_getitem": { name: "Rare Drop Table", image: "dragon_sq_shield.png" },
+            "3dose1defense": { name: "Defence Potion(3)", image: "3dose1defense.webp" },
+            "2dose1strength": { name: "Strength Potion(2)", image: "2dose1strength.webp" },
+            // Add tertiary drops
+            "~trail_easycluedrop": { name: "Easy Clue Scroll", image: "clue_scroll_easy.png" },
+            "~trail_mediumcluedrop": { name: "Medium Clue Scroll", image: "clue_scroll_medium.png" },
+            "~trail_hardcluedrop": { name: "Hard Clue Scroll", image: "clue_scroll_hard.png" },
+            "~trail_elitecluedrop": { name: "Elite Clue Scroll", image: "clue_scroll_elite.png" },
+            "~trail_mastercluedrop": { name: "Master Clue Scroll", image: "clue_scroll_master.png" }
         };
 
         // Cache for storing parsed drop tables
@@ -510,6 +506,10 @@
                         imageUrl = `https://lostcity.markets/img/items/dragonstone.webp`;
                     } else if (drop.item.toLowerCase() === "defence potion(3)") {
                         imageUrl = `https://lostcity.markets/img/items/dragonstone.webp`;
+                    } else if (drop.item.toLowerCase() === "strength potion(2)") {
+                        imageUrl = `https://lostcity.markets/img/items/2dose1strength.webp`;
+
+
                     } else {
                         const imageName = customItems[drop.item.toLowerCase()]
                             ? customItems[drop.item.toLowerCase()].image
