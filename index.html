@@ -41,6 +41,15 @@
         #searchInput::placeholder {
             color: #999;
         }
+        .clickable-item {
+            color: #90c040;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .clickable-item:hover {
+            color: #a8d050;
+        }
     </style>
 </head>
 
@@ -850,8 +859,7 @@
                         drop.item.toLowerCase().includes("mega rare table") ||
                         drop.item.toLowerCase().includes("random jewel") ||
                         drop.item.toLowerCase().includes("random herb")) {
-                        itemCell.style.cursor = "pointer";
-                        itemCell.style.textDecoration = "underline";
+                        itemCell.className = "clickable-item";
                         itemCell.onclick = () => {
                             const itemKey = Object.keys(customItems).find(key => 
                                 customItems[key].name.toLowerCase() === drop.item.toLowerCase()
