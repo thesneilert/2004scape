@@ -1,14 +1,35 @@
 /* Styles from index.html */
-select {
+select, #searchInput {
     width: 180px;
     height: 25px;
-    padding: 2px;
+    padding: 2px 5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     background-color: #474747;
     color: white;
     border: 1px solid #666;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+}
+
+select {
+    padding-right: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+#searchInput {
+    background-image: none;
 }
 
 .stone-box {
@@ -35,19 +56,25 @@ select {
     margin-bottom: 5px;
 }
 
-#searchInput {
-    width: 180px;
-    height: 25px;
-    padding: 2px;
-    box-sizing: border-box;
-    background-color: #474747;
-    color: white;
-    border: 1px solid #666;
-    margin: 0;
-}
-
 #searchInput::placeholder {
     color: #999;
+}
+
+/* Update dropdown styles to match search results */
+select option {
+    background-color: #474747;
+    color: white;
+    padding: 8px 12px;
+}
+
+select:focus {
+    outline: none;
+    border-color: #90c040;
+}
+
+/* Style the dropdown when opened */
+select:hover {
+    border-color: #90c040;
 }
 
 .clickable-item {
@@ -100,6 +127,11 @@ select {
     transform: translateX(-50%);
     border-radius: 4px;
     margin-top: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #90c040 #474747;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 .search-result-item {
@@ -488,20 +520,180 @@ input:focus {
     border-color: #90c040;
 }
 
-/* Ensure proper scrollbar styling for Chrome */
+/* Scrollbar Styles - Updated for consistency */
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #382418;
+    background: #474747;
     border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb {
     background: #90c040;
+    border-radius: 4px;
+    border: 2px solid #474747;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8d050;
+}
+
+/* Firefox Scrollbar Styles */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #90c040 #474747;
+}
+
+/* Custom Scrollbar Styles */
+select::-webkit-scrollbar {
+    width: 16px;
+    background-color: #474747;
+}
+
+select::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border: 4px solid #474747;
+    border-radius: 8px;
+}
+
+select::-webkit-scrollbar-button {
+    display: block;
+    height: 16px;
+    background-color: #474747;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 8px;
+}
+
+select::-webkit-scrollbar-button:vertical:start {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="8" viewBox="0 0 24 24" width="8" xmlns="http://www.w3.org/2000/svg"><path d="M7 14l5-5 5 5z"/></svg>');
+}
+
+select::-webkit-scrollbar-button:vertical:end {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="8" viewBox="0 0 24 24" width="8" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+}
+
+/* Custom Scrollbar Styles for both select and search results */
+select::-webkit-scrollbar,
+.search-results::-webkit-scrollbar {
+    width: 16px;
+    background-color: #474747;
+}
+
+select::-webkit-scrollbar-thumb,
+.search-results::-webkit-scrollbar-thumb {
+    background-color: #90c040;
+    border: 4px solid #474747;
+    border-radius: 8px;
+}
+
+select::-webkit-scrollbar-track,
+.search-results::-webkit-scrollbar-track {
+    background-color: #474747;
+    border-radius: 8px;
+}
+
+select::-webkit-scrollbar-button,
+.search-results::-webkit-scrollbar-button {
+    display: block;
+    height: 16px;
+    background-color: #474747;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 8px;
+}
+
+select::-webkit-scrollbar-button:vertical:start,
+.search-results::-webkit-scrollbar-button:vertical:start {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2390c040" height="8" viewBox="0 0 24 24" width="8" xmlns="http://www.w3.org/2000/svg"><path d="M7 14l5-5 5 5z"/></svg>');
+}
+
+select::-webkit-scrollbar-button:vertical:end,
+.search-results::-webkit-scrollbar-button:vertical:end {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2390c040" height="8" viewBox="0 0 24 24" width="8" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+}
+
+/* Firefox Scrollbar Styles */
+select, .search-results {
+    scrollbar-width: thin;
+    scrollbar-color: #90c040 #474747;
+}
+
+/* Ensure proper text rendering */
+.search-results {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Remove all previous scrollbar styles first */
+select::-webkit-scrollbar,
+.search-results::-webkit-scrollbar,
+select::-webkit-scrollbar-thumb,
+.search-results::-webkit-scrollbar-thumb,
+select::-webkit-scrollbar-track,
+.search-results::-webkit-scrollbar-track,
+select::-webkit-scrollbar-button,
+.search-results::-webkit-scrollbar-button {
+    all: unset;
+}
+
+/* Add new consistent scrollbar styles */
+select::-webkit-scrollbar,
+.search-results::-webkit-scrollbar {
+    width: 16px !important;
+    background-color: #474747 !important;
+}
+
+select::-webkit-scrollbar-thumb,
+.search-results::-webkit-scrollbar-thumb {
+    background-color: #90c040 !important;
+    border: 4px solid #474747 !important;
+    border-radius: 8px !important;
+    min-height: 40px !important;
+}
+
+select::-webkit-scrollbar-track,
+.search-results::-webkit-scrollbar-track {
+    background-color: #474747 !important;
+}
+
+select::-webkit-scrollbar-button:vertical:start,
+.search-results::-webkit-scrollbar-button:vertical:start {
+    display: block !important;
+    height: 16px !important;
+    width: 16px !important;
+    background-color: #474747 !important;
+    border: 1px solid #666 !important;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2390c040" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 14l5-5 5 5z"/></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 12px !important;
+}
+
+select::-webkit-scrollbar-button:vertical:end,
+.search-results::-webkit-scrollbar-button:vertical:end {
+    display: block !important;
+    height: 16px !important;
+    width: 16px !important;
+    background-color: #474747 !important;
+    border: 1px solid #666 !important;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%2390c040" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 12px !important;
+}
+
+select::-webkit-scrollbar-button:hover,
+.search-results::-webkit-scrollbar-button:hover {
+    background-color: #525252 !important;
+}
+
+/* Firefox scrollbar styles */
+select, .search-results {
+    scrollbar-width: auto !important;
+    scrollbar-color: #90c040 #474747 !important;
 }

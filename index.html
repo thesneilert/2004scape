@@ -1199,6 +1199,32 @@
     }
 }
 
+        // Add click event handlers for search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById("searchInput");
+            const searchResults = document.getElementById("searchResults");
+
+            // Show dropdown when clicking the search input
+            searchInput.addEventListener('click', function() {
+                if (this.value.length >= 2) {
+                    searchResults.style.display = "block";
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInside = searchInput.contains(event.target) || searchResults.contains(event.target);
+                if (!isClickInside) {
+                    searchResults.style.display = "none";
+                }
+            });
+
+            // Prevent clicks inside the dropdown from closing it
+            searchResults.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        });
+
         // Debounce the search function
         const debouncedSearch = debounce(searchItems, 300);
 
