@@ -589,8 +589,19 @@
                 } else {
                     // Helper function to get the rate as a number for comparison
                     const getRateValue = (rate) => {
-                        const [num, denom] = rate.split('/').map(Number);
-                        return num / denom;
+                        if (rate === "1/1" || rate.includes("infinity") || rate.includes("Infinity")) {
+                            return 1; // Highest possible rate for guaranteed drops
+                        }
+                        if (rate.includes('-')) {
+                            // For range rates like "1-3/128", take the higher number
+                            const [range, denom] = rate.split('/');
+                            const [min, max] = range.split('-').map(Number);
+                            return max / Number(denom);
+                        } else {
+                            // For single rates like "1/128"
+                            const [num, denom] = rate.split('/').map(Number);
+                            return num / denom;
+                        }
                     };
 
                     const rateA = getRateValue(a.rate);
@@ -880,6 +891,9 @@
                     
                     // Helper function to get the rate as a number for comparison
                     const getRateValue = (rate) => {
+                        if (rate === "1/1" || rate.includes("infinity") || rate.includes("Infinity")) {
+                            return 1; // Highest possible rate for guaranteed drops
+                        }
                         if (rate.includes('-')) {
                             // For range rates like "1-3/128", take the higher number
                             const [range, denom] = rate.split('/');
@@ -917,14 +931,17 @@
                             : `https://lostcity.markets/img/items/${item.image}`;
                     };
 
-                    // Try to find the item in customItems
+                    // Try to find the item in customItems with exact match first
                     let customItem = customItems[lowerCaseItem];
 
-                    // If no exact match, try to find a partial match
+                    // If no exact match, try to find a partial match, but be more precise
                     if (!customItem) {
                         for (const [key, value] of Object.entries(customItems)) {
                             const lowerKey = key.toLowerCase();
-                            if (lowerCaseItem.includes(lowerKey) || lowerKey.includes(lowerCaseItem)) {
+                            // Only match if the key is a complete word within the item name
+                            const keyWords = lowerKey.split('_');
+                            const itemWords = lowerCaseItem.split('_');
+                            if (keyWords.every(word => itemWords.includes(word))) {
                                 customItem = value;
                                 break;
                             }
@@ -1001,6 +1018,9 @@
                     const rateCell = document.createElement("td");
                     // Add function to simplify fractions
                     const simplifyFraction = (numerator, denominator) => {
+                        if (denominator === "Infinity" || denominator === "infinity") {
+                            return "1/1";
+                        }
                         const gcd = (a, b) => b ? gcd(b, a % b) : a;
                         const divisor = gcd(numerator, denominator);
                         return `${numerator/divisor}/${denominator/divisor}`;
@@ -1014,8 +1034,8 @@
                         const simplifiedMin = simplifyFraction(min, Number(denom));
                         const simplifiedMax = simplifyFraction(max, Number(denom));
                         rateCell.textContent = `${simplifiedMin}-${simplifiedMax}`;
-                    } else if (drop.rate.includes('~')) {
-                        rateCell.textContent = drop.rate;
+                    } else if (drop.rate.includes('infinity') || drop.rate.includes('Infinity')) {
+                        rateCell.textContent = "1/1";
                     } else {
                         // For single rates
                         const [num, denom] = drop.rate.split('/').map(Number);
