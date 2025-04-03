@@ -143,6 +143,7 @@ select {
     -moz-animation: spin 1s linear infinite;
     animation: spin 1s linear infinite;
     margin: 20px auto;
+    display: block;
 }
 
 .loading-text {
@@ -151,10 +152,11 @@ select {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     margin-bottom: 20px;
+    display: block;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 @-webkit-keyframes spin {
