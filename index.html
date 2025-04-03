@@ -199,6 +199,8 @@
                                     <div align="center" style="font-family:Arial,Helvetica,sans-serif; font-size:11px;">
                                         <br>
                                         <a href="https://x.com/thesneilert" class="whitelink">Made by Eilert</a>
+                                        <span style="margin: 0 10px;">|</span>
+                                        <a href="#" class="whitelink" onclick="showHowToUse(); return false;">How to Use</a>
                                         <br>
                                         <br>
                                     </div>
@@ -964,6 +966,97 @@
             if (dropdown.value) {
                 loadDropTable();
             }
+        }
+
+        // Add this new function before window.onload
+        function showHowToUse() {
+            const modal = document.createElement("div");
+            modal.className = "modal";
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <table width="500" bgcolor="black" cellpadding="4">
+                            <tr>
+                                <td class="e">
+                                    <center>
+                                        <b>How to Use Drop Tables</b>
+                                    </center>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-body">
+                        <table width="500" bgcolor="black" cellpadding="2">
+                            <tr>
+                                <td class="e">
+                                    <table width="100%" cellspacing="4" cellpadding="8" class="rare-drop-table">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3" style="text-align: left;">
+                                                    <span style="color: #90c040; font-size: 1.1em; font-weight: bold;">1. Select a Monster</span><br>
+                                                    <span style="color: #cccccc;">Choose a monster from the dropdown menu to view its drop table.</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="text-align: left;">
+                                                    <span style="color: #90c040; font-size: 1.1em; font-weight: bold;">2. Search for Items</span><br>
+                                                    <span style="color: #cccccc;">Click on a monster in the search results to view its drop table. Items matching your search will be highlighted in green.</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="text-align: left;">
+                                                    <span style="color: #90c040; font-size: 1.1em; font-weight: bold;">3. Toggle Membership</span><br>
+                                                    <span style="color: #cccccc;">Switch between Free-to-Play and Members monsters using the dropdown.</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="text-align: left;">
+                                                    <span style="color: #90c040; font-size: 1.1em; font-weight: bold;">4. Sort by Rarity</span><br>
+                                                    <span style="color: #cccccc;">Choose to view drops from most common to most rare, or vice versa.</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="text-align: left;">
+                                                    <span style="color: #90c040; font-size: 1.1em; font-weight: bold;">5. Interactive Items</span><br>
+                                                    <span style="color: #cccccc;">Click on items like <span style="color: #90c040;">Rare Drop Table</span>, <span style="color: #90c040;">Random Jewel</span>, or <span style="color: #90c040;">Random Herb</span> to see their detailed drop tables.</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" style="text-align: left;">
+                                                    <span style="color: #90c040; font-size: 1.1em; font-weight: bold;">6. Understanding Rates</span><br>
+                                                    <span style="color: #cccccc;">Drop rates are shown as fractions (e.g., <span style="color: #90c040;">"1/128"</span>). Lower numbers mean rarer drops.</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <span class="close">&times;</span>
+                </div>
+            `;
+
+            // Position the modal over the drop table
+            const dropTable = document.querySelector('#dropTable');
+            const dropTableRect = dropTable.getBoundingClientRect();
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.position = 'absolute';
+            modalContent.style.left = `${dropTableRect.left}px`;
+            modalContent.style.top = `${dropTableRect.top}px`;
+
+            document.body.appendChild(modal);
+
+            const closeBtn = modal.querySelector(".close");
+            closeBtn.onclick = () => {
+                document.body.removeChild(modal);
+            };
+
+            window.onclick = (event) => {
+                if (event.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            };
         }
 
         window.onload = async () => {
