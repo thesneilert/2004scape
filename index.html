@@ -230,6 +230,7 @@
             "~randomherb": { name: "Random Herb", image: "guam_leaf.webp" },
             "~randomjewel": { name: "Random Jewel", image: "dragonstone.webp" },
             "~ultrarare_getitem": { name: "Rare Drop Table", image: "dragon_sq_shield.png" },
+            "~megararetable": { name: "Mega Rare Table", image: "dragon_spear.png" },
             "3dose1defense": { name: "Defence Potion(3)", image: "3dose1defense.webp" },
             "2dose1strength": { name: "Strength Potion(2)", image: "2dose1strength.webp" },
             // Add tertiary drops
@@ -238,6 +239,61 @@
             "~trail_hardcluedrop": { name: "Hard Clue Scroll", image: "clue_scroll_hard.png" },
             "~trail_elitecluedrop": { name: "Elite Clue Scroll", image: "clue_scroll_elite.png" },
             "~trail_mastercluedrop": { name: "Master Clue Scroll", image: "clue_scroll_master.png" }
+        };
+
+        // Rare Drop Table data with specific icon mappings
+        const rareDropTable = {
+            "~randomherb": [
+                { item: "Unidentified Guam Leaf", rate: "32/128", icon: "unidentified_guam_leaf.webp" },
+                { item: "Unidentified Marrentill", rate: "24/128", icon: "unidentified_marrentill.webp" },
+                { item: "Unidentified Tarromin", rate: "18/128", icon: "unidentified_tarromin.webp" },
+                { item: "Unidentified Harralander", rate: "14/128", icon: "unidentified_harralander.webp" },
+                { item: "Unidentified Ranarr Weed", rate: "11/128", icon: "unidentified_ranarr_weed.webp" },
+                { item: "Unidentified Irit Leaf", rate: "8/128", icon: "unidentified_irit_leaf.webp" },
+                { item: "Unidentified Avantoe", rate: "6/128", icon: "unidentified_avantoe.webp" },
+                { item: "Unidentified Kwuarm", rate: "5/128", icon: "unidentified_kwuarm.webp" },
+                { item: "Unidentified Cadantine", rate: "4/128", icon: "unidentified_cadantine.webp" },
+                { item: "Unidentified Lantadyme", rate: "3/128", icon: "unidentified_lantadyme.webp" },
+                { item: "Unidentified Dwarf Weed", rate: "3/128", icon: "unidentified_dwarf_weed.webp" }
+            ],
+            "~randomjewel": [
+                { item: "Uncut Sapphire", rate: "32/128", icon: "uncut_sapphire.webp" },
+                { item: "Uncut Emerald", rate: "16/128", icon: "uncut_emerald.webp" },
+                { item: "Uncut Ruby", rate: "8/128", icon: "uncut_ruby.webp" },
+                { item: "Uncut Diamond", rate: "2/128", icon: "uncut_diamond.webp" },
+                { item: "Rune Javelin (5)", rate: "1/128", members: true, icon: "rune_javelin.webp" },
+                { item: "Loop Half of Key", rate: "1/128", members: true, icon: "https://oldschool.runescape.wiki/images/Loop_half_of_key.png?01ae1" },
+                { item: "Tooth Half of Key", rate: "1/128", members: true, icon: "https://oldschool.runescape.wiki/images/Tooth_half_of_key.png?01ae1" },
+                { item: "Mega Rare Table", rate: "1/128", members: true, icon: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" },
+                { item: "Chaos Talisman", rate: "3/128", members: true, icon: "chaos_talisman.webp" },
+                { item: "Nature Talisman", rate: "3/128", members: true, icon: "nature_talisman.webp" }
+            ],
+            "~ultrarare_getitem": [
+                { item: "Nature Rune (67)", rate: "3/128", icon: "naturerune.webp" },
+                { item: "Adamant Javelin (20)", rate: "2/128", icon: "adamant_javelin.webp" },
+                { item: "Death Rune (45)", rate: "2/128", icon: "deathrune.webp" },
+                { item: "Law Rune (45)", rate: "2/128", icon: "lawrune.webp" },
+                { item: "Rune Arrow (42)", rate: "2/128", icon: "rune_arrow.webp" },
+                { item: "Steel Arrow (150)", rate: "2/128", icon: "steel_arrow.webp" },
+                { item: "Rune 2h Sword", rate: "3/128", icon: "rune_2h_sword.webp" },
+                { item: "Rune Battleaxe", rate: "3/128", icon: "rune_battleaxe.webp" },
+                { item: "Rune Square Shield", rate: "2/128", icon: "rune_sq_shield.webp" },
+                { item: "Dragon Med Helm", rate: "1/128", icon: "dragon_med_helm.webp" },
+                { item: "Rune Kiteshield", rate: "1/128", icon: "rune_kiteshield.webp" },
+                { item: "Coins (3000)", rate: "20/128", icon: "coins_10000.png" },
+                { item: "Loop Half of Key", rate: "20/128", icon: "https://oldschool.runescape.wiki/images/Loop_half_of_key.png?01ae1" },
+                { item: "Tooth Half of Key", rate: "20/128", icon: "https://oldschool.runescape.wiki/images/Tooth_half_of_key.png?01ae1" },
+                { item: "Runite Bar", rate: "5/128", icon: "runite_bar.webp" },
+                { item: "Dragonstone", rate: "2/128", icon: "dragonstone.webp" },
+                { item: "Silver Ore (100)", rate: "2/128", icon: "silver_ore.webp" },
+                { item: "Random Jewel", rate: "20/128", icon: "dragonstone.webp" },
+                { item: "Mega Rare Table", rate: "15/128", icon: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" }
+            ],
+            "~megararetable": [
+                { item: "Rune Spear", rate: "8/128", icon: "rune_spear.webp" },
+                { item: "Shield Left Half", rate: "4/128", icon: "shield_left_half.webp" },
+                { item: "Dragon Spear", rate: "3/128", icon: "dragon_spear.webp" }
+            ]
         };
 
         // Cache for storing parsed drop tables
@@ -396,6 +452,108 @@
                 .replace(/\b\w/g, char => char.toUpperCase());
         }
 
+        // Function to show rare drop table details
+        function showRareDropTableDetails(itemKey) {
+            const details = rareDropTable[itemKey];
+            if (!details) return;
+
+            // Combine duplicate items and sum their rates
+            const combinedDetails = details.reduce((acc, drop) => {
+                const existingItem = acc.find(item => item.item === drop.item);
+                if (existingItem) {
+                    // Parse existing and new rates
+                    const [existingNum, existingDenom] = existingItem.rate.split('/').map(Number);
+                    const [newNum, newDenom] = drop.rate.split('/').map(Number);
+                    
+                    // If denominators are the same, just add numerators
+                    if (existingDenom === newDenom) {
+                        existingItem.rate = `${existingNum + newNum}/${existingDenom}`;
+                    } else {
+                        // Convert to same denominator (128) and add
+                        const totalRate = (existingNum/existingDenom) + (newNum/newDenom);
+                        existingItem.rate = `${Math.round(totalRate * 128)}/128`;
+                    }
+                } else {
+                    acc.push({...drop});
+                }
+                return acc;
+            }, []);
+
+            const modal = document.createElement("div");
+            modal.className = "modal";
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <table width="500" bgcolor="black" cellpadding="4">
+                            <tr>
+                                <td class="e">
+                                    <center>
+                                        <b>${customItems[itemKey].name} Details</b>
+                                    </center>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-body">
+                        <table width="500" bgcolor="black" cellpadding="2">
+                            <tr>
+                                <td class="e">
+                                    <table width="100%" cellspacing="4" cellpadding="8" class="rare-drop-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Image</th>
+                                                <th>Item</th>
+                                                <th>Rate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${combinedDetails.map(drop => {
+                                                const imageUrl = drop.icon.startsWith('http') 
+                                                    ? drop.icon 
+                                                    : `https://lostcity.markets/img/items/${drop.icon}`;
+                                                return `
+                                                    <tr>
+                                                        <td>
+                                                            <img src="${imageUrl}" alt="${drop.item}" width="32" height="32" onerror="this.src='https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651'">
+                                                        </td>
+                                                        <td>${drop.item}${drop.members ? ' <span class="members">(Members)</span>' : ''}</td>
+                                                        <td>${drop.rate}</td>
+                                                    </tr>
+                                                `;
+                                            }).join('')}
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <span class="close">&times;</span>
+                </div>
+            `;
+
+            // Position the modal over the drop table
+            const dropTable = document.querySelector('#dropTable');
+            const dropTableRect = dropTable.getBoundingClientRect();
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.position = 'absolute';
+            modalContent.style.left = `${dropTableRect.left}px`;
+            modalContent.style.top = `${dropTableRect.top}px`;
+
+            document.body.appendChild(modal);
+
+            const closeBtn = modal.querySelector(".close");
+            closeBtn.onclick = () => {
+                document.body.removeChild(modal);
+            };
+
+            window.onclick = (event) => {
+                if (event.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            };
+        }
+
+        // Modify the loadDropTable function to add click handlers for rare drop table items
         async function loadDropTable() {
             const dropdown = document.getElementById("monsterDropdown");
             const selectedFile = dropdown.value;
@@ -551,6 +709,23 @@
 
                     const itemCell = document.createElement("td");
                     itemCell.textContent = formattedItemName;
+
+                    // Add click handler for rare drop table items
+                    if (drop.item.toLowerCase().includes("rare drop table") || 
+                        drop.item.toLowerCase().includes("mega rare table") ||
+                        drop.item.toLowerCase().includes("random jewel") ||
+                        drop.item.toLowerCase().includes("random herb")) {
+                        itemCell.style.cursor = "pointer";
+                        itemCell.style.textDecoration = "underline";
+                        itemCell.onclick = () => {
+                            const itemKey = Object.keys(customItems).find(key => 
+                                customItems[key].name.toLowerCase() === drop.item.toLowerCase()
+                            );
+                            if (itemKey) {
+                                showRareDropTableDetails(itemKey);
+                            }
+                        };
+                    }
 
                     const quantityCell = document.createElement("td");
                     quantityCell.textContent = drop.quantity;

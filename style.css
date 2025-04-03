@@ -222,3 +222,105 @@
         .highlight {
             color: #04A800;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: block;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            border: none;
+            width: 500px;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            position: relative;
+        }
+
+        .modal-header {
+            position: relative;
+            padding: 0;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 0;
+            background-color: #000;
+        }
+
+        .close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: #90c040;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .close:hover {
+            color: #fff;
+        }
+
+        .rare-drop-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0;
+            background-color: #000;
+        }
+
+        .rare-drop-table th,
+        .rare-drop-table td {
+            border: none;
+            padding: 8px;
+            text-align: left;
+            vertical-align: middle;
+            background-color: #000;
+        }
+
+        .rare-drop-table th {
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .rare-drop-table tr:hover {
+            background-color: #1a1a1a;
+        }
+
+        .rare-drop-table img {
+            vertical-align: middle;
+            margin-right: 5px;
+            background-color: #000;
+        }
+
+        .members {
+            color: #90c040;
+            font-style: italic;
+            font-size: 11px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Update the clickable items in the main table */
+        #dropTable td[onclick] {
+            cursor: pointer;
+            text-decoration: underline;
+            color: #90c040;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        #dropTable td[onclick]:hover {
+            color: #fff;
+        }
