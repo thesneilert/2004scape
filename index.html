@@ -8,6 +8,39 @@
     <title>Drop Tables | 2004Scape</title>
     <link rel="icon" type="image/x-icon" href="img\tabicon.png">
     <link rel="stylesheet" href="style.css">
+    <style>
+        select {
+            width: 180px;
+            height: 25px;
+            padding: 2px;
+            box-sizing: border-box;
+            background-color: #474747;
+            color: white;
+            border: 1px solid #666;
+        }
+        .stone-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .stone-box b {
+            margin-bottom: 5px;
+        }
+        #searchInput {
+            width: 180px;
+            height: 25px;
+            padding: 2px;
+            box-sizing: border-box;
+            background-color: #474747;
+            color: white;
+            border: 1px solid #666;
+        }
+        #searchInput::placeholder {
+            color: #999;
+        }
+    </style>
 </head>
 
 <body bgcolor="black" text="white" link="#90c040" alink="#90c040" vlink="#90c040" topmargin="0" leftmargin="0">
@@ -47,17 +80,39 @@
                                         <div id="loadingText" class="loading-text hidden">Loading drop tables...
                                             <br>Please hold tight, good things take time!
                                         </div>
-                                        <!-- Membership Toggle - MOVED TO TOP -->
-                                        <table width=200 bgcolor=black cellpadding=4>
+                                        <!-- Membership and Rarity Toggles Side by Side -->
+                                        <table>
                                             <tr>
-                                                <td class=b bgcolor=#474747 background=img/stoneback.gif>
-                                                    <div class="stone-box">
-                                                        <b>Membership</b><br>
-                                                        <select id="membershipToggle" onchange="toggleMembership()">
-                                                            <option value="f2p">Free-to-Play</option>
-                                                            <option value="p2p">Members</option>
-                                                        </select>
-                                                    </div>
+                                                <td>
+                                                    <table width=215 height=70 bgcolor=black cellpadding=4>
+                                                        <tr>
+                                                            <td class=b bgcolor=#474747 background=img/stoneback.gif>
+                                                                <div class="stone-box">
+                                                                    <b>Sort by Rarity</b><br>
+                                                                    <select id="rarityToggle" onchange="toggleRaritySort()">
+                                                                        <option value="asc">Most Common First</option>
+                                                                        <option value="desc">Most Rare First</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td>
+                                                    <table width=215 height=70 bgcolor=black cellpadding=4>
+                                                        <tr>
+                                                            <td class=b bgcolor=#474747 background=img/stoneback.gif>
+                                                                <div class="stone-box">
+                                                                    <b>Membership</b><br>
+                                                                    <select id="membershipToggle" onchange="toggleMembership()">
+                                                                        <option value="f2p">Free-to-Play</option>
+                                                                        <option value="p2p">Members</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </td>
                                             </tr>
                                         </table>
@@ -66,7 +121,7 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    <table width=200 bgcolor=black cellpadding=4>
+                                                    <table width=215 height=70 bgcolor=black cellpadding=4>
                                                         <tr>
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
@@ -83,7 +138,7 @@
                                                 </td>
                                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                                 <td>
-                                                    <table width=200 bgcolor=black cellpadding=4>
+                                                    <table width=215 height=70 bgcolor=black cellpadding=4>
                                                         <tr>
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
@@ -703,9 +758,24 @@
                 });
 
                 aggregatedDrops.sort((a, b) => {
-                    const rateA = parseInt(a.rate.split('/')[1], 10);
-                    const rateB = parseInt(b.rate.split('/')[1], 10);
-                    return rateA - rateB;
+                    // Helper function to get the worst (highest) rate from a rate string
+                    const getWorstRate = (rateStr) => {
+                        if (rateStr.includes('-')) {
+                            // For range rates like "1-3/128", take the higher number
+                            const [range, denom] = rateStr.split('/');
+                            const [min, max] = range.split('-').map(Number);
+                            return max / Number(denom);
+                        } else {
+                            // For single rates like "1/128"
+                            const [num, denom] = rateStr.split('/').map(Number);
+                            return num / denom;
+                        }
+                    };
+
+                    const rateA = getWorstRate(a.rate);
+                    const rateB = getWorstRate(b.rate);
+                    const sortOrder = document.getElementById("rarityToggle").value === "asc" ? 1 : -1;
+                    return (rateA - rateB) * sortOrder;
                 });
 
                 aggregatedDrops.forEach(drop => {
@@ -876,6 +946,14 @@
                 noResults.className = "search-result-item";
                 noResults.textContent = "No results found.";
                 searchResults.appendChild(noResults);
+            }
+        }
+
+        // Add this new function after the toggleMembership function
+        function toggleRaritySort() {
+            const dropdown = document.getElementById("monsterDropdown");
+            if (dropdown.value) {
+                loadDropTable();
             }
         }
 
