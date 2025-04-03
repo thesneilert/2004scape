@@ -618,13 +618,12 @@
                 </div>
             `;
 
-            // Position the modal over the drop table
-            const dropTable = document.querySelector('#dropTable');
-            const dropTableRect = dropTable.getBoundingClientRect();
+            // Position the modal near the top of the page with some headroom
             const modalContent = modal.querySelector('.modal-content');
-            modalContent.style.position = 'absolute';
-            modalContent.style.left = `${dropTableRect.left}px`;
-            modalContent.style.top = `${dropTableRect.top}px`;
+            modalContent.style.position = 'fixed';
+            modalContent.style.top = '50px';  // Add some headroom from the top
+            modalContent.style.left = '50%';
+            modalContent.style.transform = 'translateX(-50%)';  // Center horizontally
 
             document.body.appendChild(modal);
 
@@ -1109,13 +1108,12 @@
                 </div>
             `;
 
-            // Position the modal over the drop table
-            const dropTable = document.querySelector('#dropTable');
-            const dropTableRect = dropTable.getBoundingClientRect();
+            // Position the modal near the top of the page with some headroom
             const modalContent = modal.querySelector('.modal-content');
-            modalContent.style.position = 'absolute';
-            modalContent.style.left = `${dropTableRect.left}px`;
-            modalContent.style.top = `${dropTableRect.top}px`;
+            modalContent.style.position = 'fixed';
+            modalContent.style.top = '50px';  // Add some headroom from the top
+            modalContent.style.left = '50%';
+            modalContent.style.transform = 'translateX(-50%)';  // Center horizontally
 
             document.body.appendChild(modal);
 

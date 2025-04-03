@@ -67,8 +67,8 @@ select {
 
 .modal-header {
     position: relative;
-    padding: 10px;
-    border-bottom: 1px solid #666;
+    padding: 0;
+    border-bottom: none;
 }
 
 .search-results {
@@ -158,8 +158,8 @@ select {
 }
 
 .modal-content {
-    background-color: #474747;
-    border: 1px solid #666;
+    background-color: black;
+    border: 2px solid #382418;
     max-width: 90%;
     max-height: 90vh;
     overflow-y: auto;
@@ -167,7 +167,7 @@ select {
 }
 
 .modal-body {
-    padding: 20px;
+    padding: 0;
 }
 
 .monster-name {
@@ -230,6 +230,10 @@ TD {
 
 .e {
     border: 2px solid #382418;
+}
+
+.modal-content .e {
+    border: none;
 }
 
 .c {
@@ -316,7 +320,7 @@ A.pink:hover {
     width: 100%;
     border-collapse: collapse;
     margin-top: 0;
-    background-color: #000;
+    background-color: black;
 }
 
 .rare-drop-table th,
@@ -325,7 +329,7 @@ A.pink:hover {
     padding: 8px;
     text-align: left;
     vertical-align: middle;
-    background-color: #000;
+    background-color: black;
 }
 
 .rare-drop-table th {
@@ -335,7 +339,7 @@ A.pink:hover {
 }
 
 .rare-drop-table tr:hover {
-    background-color: #1a1a1a;
+    background-color: #0a0a0a;
 }
 
 .rare-drop-table img {
@@ -419,4 +423,8 @@ input:checked + .slider:before {
     font-family: Arial,Helvetica,sans-serif;
     display: inline-block;
     margin-left: 3px;
+}
+
+.modal-content table td.e {
+    border: none;
 }
