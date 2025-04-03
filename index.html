@@ -56,7 +56,8 @@
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
                                                                     <b>Sort by Rarity</b><br>
-                                                                    <select id="rarityToggle" onchange="toggleRaritySort()">
+                                                                    <select id="rarityToggle"
+                                                                        onchange="toggleRaritySort()">
                                                                         <option value="asc">Most Common First</option>
                                                                         <option value="desc">Most Rare First</option>
                                                                     </select>
@@ -72,7 +73,8 @@
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
                                                                     <b>Membership</b><br>
-                                                                    <select id="membershipToggle" onchange="toggleMembership()">
+                                                                    <select id="membershipToggle"
+                                                                        onchange="toggleMembership()">
                                                                         <option value="f2p">Free-to-Play</option>
                                                                         <option value="p2p">Members</option>
                                                                     </select>
@@ -95,8 +97,7 @@
                                                                     <b>Search for an item</b><br>
                                                                     <input type="text" id="searchInput"
                                                                         placeholder="Search..." oninput="searchItems()"
-                                                                        autocomplete="off"
-                                                                        disabled>
+                                                                        autocomplete="off" disabled>
                                                                     <div id="searchResults" class="search-results"
                                                                         background=img/title/shinystonered.jpg></div>
                                                                 </div>
@@ -156,7 +157,8 @@
                                 <td valign="bottom">
                                     <div align="center" style="font-family:Arial,Helvetica,sans-serif; font-size:11px;">
                                         <br>
-                                        <a href="#" class="whitelink" onclick="showHowToUse(); return false;">How to Use</a>
+                                        <a href="#" class="whitelink" onclick="showHowToUse(); return false;">How to
+                                            Use</a>
                                         <span style="margin: 0 10px;">|</span>
                                         <a href="https://x.com/thesneilert" class="whitelink">Made by Eilert</a>
                                         <br>
@@ -373,17 +375,20 @@
 
         // Function to toggle between F2P and P2P NPCs
         function toggleMembership() {
-            const toggle = document.getElementById("membershipToggle");
-            if (toggle.value === "f2p") {
-                activeDropFiles = [...f2pDropFiles];
-            } else {
-                activeDropFiles = [...p2pDropFiles];
-            }
+    const toggle = document.getElementById("membershipToggle");
+    if (toggle.value === "f2p") {
+        activeDropFiles = [...f2pDropFiles];
+    } else {
+        activeDropFiles = [...p2pDropFiles];
+    }
 
-            populateDropdown();
-            document.getElementById("monsterDropdown").value = "";
-            document.querySelector("#dropTable tbody").innerHTML = "";
-        }
+    populateDropdown();
+    document.getElementById("monsterDropdown").value = "";
+    document.querySelector("#dropTable tbody").innerHTML = "";
+    
+    // Clear any existing search results
+    document.getElementById("searchResults").style.display = "none";
+}
 
         // Function to fetch and parse a single .rs2 file
         async function fetchDropTable(fileName) {
@@ -533,17 +538,17 @@
                     // Parse existing and new rates
                     const [existingNum, existingDenom] = existingItem.rate.split('/').map(Number);
                     const [newNum, newDenom] = drop.rate.split('/').map(Number);
-                    
+
                     // If denominators are the same, just add numerators
                     if (existingDenom === newDenom) {
                         existingItem.rate = `${existingNum + newNum}/${existingDenom}`;
                     } else {
                         // Convert to same denominator (128) and add
-                        const totalRate = (existingNum/existingDenom) + (newNum/newDenom);
+                        const totalRate = (existingNum / existingDenom) + (newNum / newDenom);
                         existingItem.rate = `${Math.round(totalRate * 128)}/128`;
                     }
                 } else {
-                    acc.push({...drop});
+                    acc.push({ ...drop });
                 }
                 return acc;
             }, []);
@@ -577,10 +582,10 @@
                                         </thead>
                                         <tbody>
                                             ${combinedDetails.map(drop => {
-                                                const imageUrl = drop.icon.startsWith('http') 
-                                                    ? drop.icon 
-                                                    : `https://lostcity.markets/img/items/${drop.icon}`;
-                                                return `
+                const imageUrl = drop.icon.startsWith('http')
+                    ? drop.icon
+                    : `https://lostcity.markets/img/items/${drop.icon}`;
+                return `
                                                     <tr>
                                                         <td>
                                                             <img src="${imageUrl}" alt="${drop.item}" width="32" height="32" onerror="this.src='https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651'">
@@ -589,7 +594,7 @@
                                                         <td>${drop.rate}</td>
                                                     </tr>
                                                 `;
-                                            }).join('')}
+            }).join('')}
                                         </tbody>
                                     </table>
                                 </td>
@@ -757,18 +762,18 @@
                     // Get the image URL based on the item
                     let imageUrl;
                     const lowerCaseItem = drop.item.toLowerCase();
-                    
+
                     // Helper function to get image URL from custom item
                     const getImageUrl = (item) => {
                         if (!item) return null;
-                        return item.image.startsWith('http') 
-                            ? item.image 
+                        return item.image.startsWith('http')
+                            ? item.image
                             : `https://lostcity.markets/img/items/${item.image}`;
                     };
 
                     // Try to find the item in customItems
                     let customItem = customItems[lowerCaseItem];
-                    
+
                     // If no exact match, try to find a partial match
                     if (!customItem) {
                         for (const [key, value] of Object.entries(customItems)) {
@@ -813,13 +818,13 @@
                             'https://lostcity.markets/img/items/coins.webp'
                         ];
                         let currentFallback = 0;
-                        
+
                         const tryNextFallback = () => {
                             if (currentFallback < fallbacks.length) {
                                 this.src = fallbacks[currentFallback++];
                             }
                         };
-                        
+
                         this.onerror = tryNextFallback;
                         tryNextFallback();
                     };
@@ -829,13 +834,13 @@
                     itemCell.textContent = formattedItemName;
 
                     // Add click handler for rare drop table items
-                    if (drop.item.toLowerCase().includes("rare drop table") || 
+                    if (drop.item.toLowerCase().includes("rare drop table") ||
                         drop.item.toLowerCase().includes("mega rare table") ||
                         drop.item.toLowerCase().includes("random jewel") ||
                         drop.item.toLowerCase().includes("random herb")) {
                         itemCell.className = "clickable-item";
                         itemCell.onclick = () => {
-                            const itemKey = Object.keys(customItems).find(key => 
+                            const itemKey = Object.keys(customItems).find(key =>
                                 customItems[key].name.toLowerCase() === drop.item.toLowerCase()
                             );
                             if (itemKey) {
@@ -902,92 +907,91 @@
         }
 
         async function searchItems() {
-            const searchInput = document.getElementById("searchInput").value.toLowerCase().trim();
-            const searchResults = document.getElementById("searchResults");
-            searchResults.innerHTML = "";
+    const searchInput = document.getElementById("searchInput").value.toLowerCase().trim();
+    const searchResults = document.getElementById("searchResults");
+    searchResults.innerHTML = "";
 
-            if (searchInput.length < 2) {
-                searchResults.style.display = "none";
-                return;
-            }
+    if (searchInput.length < 2) {
+        searchResults.style.display = "none";
+        return;
+    }
 
-            try {
-                const results = [];
-                const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
+    try {
+        const results = [];
+        const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
 
-                // Search through both F2P and P2P files
-                const allFiles = [...f2pDropFiles, ...p2pDropFiles];
-                const maxFilesToSearch = 20;
-                const filesToSearch = allFiles.slice(0, maxFilesToSearch);
+        // Search through ALL files (both F2P and P2P) regardless of current view
+        const allFiles = [...f2pDropFiles, ...p2pDropFiles];
 
-                for (const file of filesToSearch) {
-                    const drops = await fetchDropTable(file);
-                    // Create a Set of unique matching items to prevent duplicate counting
-                    const uniqueMatchingItems = new Set();
-                    
-                    drops.forEach(drop => {
-                        const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
-                        if (normalizedItemName.includes(normalizedSearchInput)) {
-                            uniqueMatchingItems.add(drop.item); // Add to Set to ensure uniqueness
-                        }
-                    });
-
-                    if (uniqueMatchingItems.size > 0) {
-                        const isP2P = p2pDropFiles.includes(file);
-                        results.push({
-                            monster: formatMonsterName(file.replace(".rs2", "")),
-                            file: file,
-                            matchCount: uniqueMatchingItems.size, // Use Set size for unique count
-                            isP2P: isP2P
-                        });
-                    }
+        // Remove the limit to search through all files
+        for (const file of allFiles) {
+            const drops = await fetchDropTable(file);
+            const uniqueMatchingItems = new Set();
+            
+            drops.forEach(drop => {
+                const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
+                if (normalizedItemName.includes(normalizedSearchInput)) {
+                    uniqueMatchingItems.add(drop.item);
                 }
+            });
 
-                // Sort results by number of matches
-                results.sort((a, b) => b.matchCount - a.matchCount);
-
-                if (results.length > 0) {
-                    searchResults.style.display = "block";
-                    results.forEach(result => {
-                        const resultItem = document.createElement("div");
-                        resultItem.className = "search-result-item";
-                        
-                        // Create two-line layout
-                        const membershipStatus = result.isP2P ? '(P2P)' : '(F2P)';
-                        resultItem.innerHTML = `
-                            <div class="monster-name">${result.monster}</div>
-                            <div class="monster-info">${result.matchCount} matches ${membershipStatus}</div>
-                        `;
-                        
-                        resultItem.onclick = () => {
-                            // Set the membership toggle to match the monster's type
-                            document.getElementById("membershipToggle").value = result.isP2P ? "p2p" : "f2p";
-                            // Update active drop files based on membership
-                            activeDropFiles = result.isP2P ? [...p2pDropFiles] : [...f2pDropFiles];
-                            // Update dropdown and select monster
-                            populateDropdown();
-                            document.getElementById("monsterDropdown").value = result.file;
-                            loadDropTable();
-                            searchResults.style.display = "none";
-                        };
-                        searchResults.appendChild(resultItem);
-                    });
-                } else {
-                    searchResults.style.display = "block";
-                    const noResults = document.createElement("div");
-                    noResults.className = "search-result-item";
-                    noResults.textContent = "No results found.";
-                    searchResults.appendChild(noResults);
-                }
-            } catch (error) {
-                console.error("Error during search:", error);
-                searchResults.style.display = "block";
-                const errorMessage = document.createElement("div");
-                errorMessage.className = "search-result-item";
-                errorMessage.textContent = "An error occurred while searching.";
-                searchResults.appendChild(errorMessage);
+            if (uniqueMatchingItems.size > 0) {
+                const isP2P = p2pDropFiles.includes(file);
+                results.push({
+                    monster: formatMonsterName(file.replace(".rs2", "")),
+                    file: file,
+                    matchCount: uniqueMatchingItems.size,
+                    isP2P: isP2P
+                });
             }
         }
+
+        // Sort results by number of matches
+        results.sort((a, b) => b.matchCount - a.matchCount);
+
+        if (results.length > 0) {
+            searchResults.style.display = "block";
+            results.forEach(result => {
+                const resultItem = document.createElement("div");
+                resultItem.className = "search-result-item";
+                
+                // Highlight P2P results differently
+                const membershipClass = result.isP2P ? "p2p-result" : "f2p-result";
+                resultItem.innerHTML = `
+                    <div class="monster-name ${membershipClass}">${result.monster}</div>
+                    <div class="monster-info">${result.matchCount} matches <span class="${membershipClass}">(${result.isP2P ? 'P2P' : 'F2P'})</span></div>
+                `;
+                
+                resultItem.onclick = () => {
+                    // Update the membership toggle to match the selected monster
+                    document.getElementById("membershipToggle").value = result.isP2P ? "p2p" : "f2p";
+                    // Trigger the membership change
+                    toggleMembership();
+                    // Select the monster in the dropdown
+                    document.getElementById("monsterDropdown").value = result.file;
+                    // Load its drop table
+                    loadDropTable();
+                    // Clear the search results
+                    searchResults.style.display = "none";
+                };
+                searchResults.appendChild(resultItem);
+            });
+        } else {
+            searchResults.style.display = "block";
+            const noResults = document.createElement("div");
+            noResults.className = "search-result-item";
+            noResults.textContent = "No results found.";
+            searchResults.appendChild(noResults);
+        }
+    } catch (error) {
+        console.error("Error during search:", error);
+        searchResults.style.display = "block";
+        const errorMessage = document.createElement("div");
+        errorMessage.className = "search-result-item";
+        errorMessage.textContent = "An error occurred while searching.";
+        searchResults.appendChild(errorMessage);
+    }
+}
 
         // Debounce the search function
         const debouncedSearch = debounce(searchItems, 300);
