@@ -1,326 +1,387 @@
-        /* Loading spinner */
-        .loader {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
+/* Styles from index.html */
+select {
+    width: 180px;
+    height: 25px;
+    padding: 2px;
+    box-sizing: border-box;
+    background-color: #474747;
+    color: white;
+    border: 1px solid #666;
+}
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+.stone-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    position: relative;
+}
 
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+.stone-box b {
+    margin-bottom: 5px;
+}
 
-        .hidden {
-            display: none;
-        }
+#searchInput {
+    width: 180px;
+    height: 25px;
+    padding: 2px;
+    box-sizing: border-box;
+    background-color: #474747;
+    color: white;
+    border: 1px solid #666;
+    margin: 0;
+}
 
-        .loading-text {
-            color: #04A800;
-            text-align: center;
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
+#searchInput::placeholder {
+    color: #999;
+}
 
-        #dropTable img {
-            vertical-align: middle;
-        }
+.clickable-item {
+    color: #90c040;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
 
+.clickable-item:hover {
+    color: #a8d050;
+}
 
-        /* RuneScape 2004 Theme for Dropdown and Search Bar */
-        .search-bar input {
-            padding: 5px;
-            font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #382418;
-            color: white;
-            border: 2px solid #570700;
-            border-radius: 4px;
-            width: 100%;
-            max-width: 180px;
-        }
+.close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #90c040;
+}
 
-        .search-results {
-            border-radius: 4px;
-            margin-top: 5px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
+.close:hover {
+    color: #a8d050;
+}
 
-        .search-result-item {
-            padding: 5px;
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-        }
+.modal-header {
+    position: relative;
+}
 
-        .search-result-item:hover {
-            background-color: #570700;
-        }
+.search-results {
+    position: absolute;
+    background-color: #474747;
+    border: 1px solid #666;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    width: 180px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-        .dropdown select {
-            padding: 5px;
-            font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #382418;
-            color: white;
-            border: 2px solid #570700;
-            border-radius: 4px;
-            width: 100%;
-            max-width: 180px;
-        }
+.search-result-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.2s;
+}
 
-        .stone-box {
-            background: url('img/stoneback.gif');
-            padding: 10px;
-            text-align: center;
-        }
+.search-result-item:hover {
+    background-color: #666;
+}
 
-        BODY,
-        P,
-        TD {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
-        }
+.search-result-item:active {
+    background-color: #90c040;
+}
 
-        .b {
-            border-style: outset;
-            border-width: 3pt;
-            border-color: #373737
-        }
+.highlight {
+    background-color: rgba(144, 192, 64, 0.2);
+}
 
-        .b2 {
-            border-style: outset;
-            border-width: 3pt;
-            border-color: #570700;
-        }
+.members {
+    color: #ffd700;
+    font-size: 0.8em;
+    margin-left: 4px;
+}
 
-        .e {
-            border: 2px solid #382418;
-        }
+.loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #90c040;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
 
-        .c {
-            text-decoration: none;
-        }
+.loading-text {
+    color: #90c040;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
 
-        .white {
-            text-decoration: none;
-            color: #FFFFFF;
-        }
+.hidden {
+    display: none;
+}
 
-        .red {
-            text-decoration: none;
-            color: #E10505;
-        }
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
-        .lblue {
-            text-decoration: none;
-            color: #9DB8C3;
-        }
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .dblue {
-            text-decoration: none;
-            color: #0D6083;
-        }
+.modal-content {
+    background-color: #474747;
+    border: 1px solid #666;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
 
-        .yellow {
-            text-decoration: none;
-            color: #FFE139;
-        }
+.modal-header {
+    padding: 10px;
+    border-bottom: 1px solid #666;
+}
 
-        .green {
-            text-decoration: none;
-            color: #04A800;
-        }
+.modal-body {
+    padding: 20px;
+}
 
-        .purple {
-            text-decoration: none;
-            color: #C503FD;
-        }
+.monster-name {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
 
-        .pink {
-            text-decoration: none;
-            color: #FAA8AA;
-        }
+.monster-info {
+    font-size: 11px;
+    color: #999;
+}
 
-        A.c:hover {
-            text-decoration: underline
-        }
+#dropTable img {
+    vertical-align: middle;
+}
 
-        A.white:hover {
-            text-decoration: underline
-        }
+/* RuneScape 2004 Theme for Dropdown and Search Bar */
+.search-bar input {
+    padding: 5px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #382418;
+    color: white;
+    border: 2px solid #570700;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 180px;
+}
 
-        A.red:hover {
-            text-decoration: underline
-        }
+.search-results {
+    border-radius: 4px;
+    margin-top: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+}
 
-        A.lblue:hover {
-            text-decoration: underline
-        }
+.search-result-item {
+    padding: 5px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+}
 
-        A.dblue:hover {
-            text-decoration: underline
-        }
+.search-result-item:hover {
+    background-color: #570700;
+}
 
-        A.yellow:hover {
-            text-decoration: underline
-        }
+.dropdown select {
+    padding: 5px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #382418;
+    color: white;
+    border: 2px solid #570700;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 180px;
+}
 
-        A.green:hover {
-            text-decoration: underline
-        }
+.stone-box {
+    background: url('img/stoneback.gif');
+    padding: 10px;
+    text-align: center;
+}
 
-        A.purple:hover {
-            text-decoration: underline
-        }
+BODY,
+P,
+TD {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
 
-        A.pink:hover {
-            text-decoration: underline
-        }
+.b {
+    border-style: outset;
+    border-width: 3pt;
+    border-color: #373737
+}
 
-        .hidden {
-            display: none;
-        }
-        
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .search-result-item {
-            padding: 5px;
-            cursor: pointer;
-            color: white;
-        }
-        
-        .search-result-item:hover {
-            background-color: #666;
-        }
-        
-        .highlight {
-            color: #04A800;
-        }
+.b2 {
+    border-style: outset;
+    border-width: 3pt;
+    border-color: #570700;
+}
 
-        /* Modal Styles */
-        .modal {
-            display: block;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-        }
+.e {
+    border: 2px solid #382418;
+}
 
-        .modal-content {
-            background-color: #000;
-            margin: 0;
-            padding: 0;
-            border: none;
-            width: 500px;
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
-            position: relative;
-        }
+.c {
+    text-decoration: none;
+}
 
-        .modal-header {
-            position: relative;
-            padding: 0;
-            margin: 0;
-        }
+.white {
+    text-decoration: none;
+    color: #FFFFFF;
+}
 
-        .modal-body {
-            padding: 0;
-            background-color: #000;
-        }
+.red {
+    text-decoration: none;
+    color: #E10505;
+}
 
-        .close {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            color: #90c040;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 2;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-        }
+.lblue {
+    text-decoration: none;
+    color: #9DB8C3;
+}
 
-        .close:hover {
-            color: #fff;
-        }
+.dblue {
+    text-decoration: none;
+    color: #0D6083;
+}
 
-        .rare-drop-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 0;
-            background-color: #000;
-        }
+.yellow {
+    text-decoration: none;
+    color: #FFE139;
+}
 
-        .rare-drop-table th,
-        .rare-drop-table td {
-            border: none;
-            padding: 8px;
-            text-align: left;
-            vertical-align: middle;
-            background-color: #000;
-        }
+.green {
+    text-decoration: none;
+    color: #04A800;
+}
 
-        .rare-drop-table th {
-            color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-        }
+.purple {
+    text-decoration: none;
+    color: #C503FD;
+}
 
-        .rare-drop-table tr:hover {
-            background-color: #1a1a1a;
-        }
+.pink {
+    text-decoration: none;
+    color: #FAA8AA;
+}
 
-        .rare-drop-table img {
-            vertical-align: middle;
-            margin-right: 5px;
-            background-color: #000;
-        }
+A.c:hover {
+    text-decoration: underline
+}
 
-        .members {
-            color: #90c040;
-            font-style: italic;
-            font-size: 11px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-        }
+A.white:hover {
+    text-decoration: underline
+}
 
-        /* Update the clickable items in the main table */
-        #dropTable td[onclick] {
-            cursor: pointer;
-            text-decoration: underline;
-            color: #90c040;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-        }
+A.red:hover {
+    text-decoration: underline
+}
 
-        #dropTable td[onclick]:hover {
-            color: #fff;
-        }
+A.lblue:hover {
+    text-decoration: underline
+}
+
+A.dblue:hover {
+    text-decoration: underline
+}
+
+A.yellow:hover {
+    text-decoration: underline
+}
+
+A.green:hover {
+    text-decoration: underline
+}
+
+A.purple:hover {
+    text-decoration: underline
+}
+
+A.pink:hover {
+    text-decoration: underline
+}
+
+.hidden {
+    display: none;
+}
+
+.rare-drop-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0;
+    background-color: #000;
+}
+
+.rare-drop-table th,
+.rare-drop-table td {
+    border: none;
+    padding: 8px;
+    text-align: left;
+    vertical-align: middle;
+    background-color: #000;
+}
+
+.rare-drop-table th {
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.rare-drop-table tr:hover {
+    background-color: #1a1a1a;
+}
+
+.rare-drop-table img {
+    vertical-align: middle;
+    margin-right: 5px;
+    background-color: #000;
+}
+
+.members {
+    color: #90c040;
+    font-style: italic;
+    font-size: 11px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Update the clickable items in the main table */
+#dropTable td[onclick] {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #90c040;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+#dropTable td[onclick]:hover {
+    color: #fff;
+}
