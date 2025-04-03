@@ -550,6 +550,9 @@
             const details = rareDropTable[itemKey];
             if (!details) return;
 
+            // Get current sort option
+            const sortOption = document.getElementById("sortToggle").value;
+
             // Combine duplicate items and sum their rates
             const combinedDetails = details.reduce((acc, drop) => {
                 const existingItem = acc.find(item => item.item === drop.item);
@@ -577,11 +580,25 @@
                 return acc;
             }, []);
 
-            // Sort the combined details by rate (converting back to numbers for comparison)
+            // Sort the combined details based on the current sort option
             combinedDetails.sort((a, b) => {
-                const rateA = 1 / Number(a.rate.split('/')[1]);
-                const rateB = 1 / Number(b.rate.split('/')[1]);
-                return rateB - rateA;
+                if (sortOption === "name-asc") {
+                    return a.item.localeCompare(b.item);
+                } else if (sortOption === "name-desc") {
+                    return b.item.localeCompare(a.item);
+                } else {
+                    // Helper function to get the rate as a number for comparison
+                    const getRateValue = (rate) => {
+                        const [num, denom] = rate.split('/').map(Number);
+                        return num / denom;
+                    };
+
+                    const rateA = getRateValue(a.rate);
+                    const rateB = getRateValue(b.rate);
+                    // Most Common First (asc) shows highest rates first
+                    // Most Rare First (desc) shows lowest rates first
+                    return sortOption === "asc" ? rateB - rateA : rateA - rateB;
+                }
             });
 
             const modal = document.createElement("div");
@@ -777,25 +794,25 @@
                         return b.item.localeCompare(a.item);
                     }
                     
-                    // Default sorting by rarity (asc or desc)
-                    // Helper function to get the worst (highest) rate from a rate string
-                    const getWorstRate = (rateStr) => {
-                        if (rateStr.includes('-')) {
+                    // Helper function to get the rate as a number for comparison
+                    const getRateValue = (rate) => {
+                        if (rate.includes('-')) {
                             // For range rates like "1-3/128", take the higher number
-                            const [range, denom] = rateStr.split('/');
+                            const [range, denom] = rate.split('/');
                             const [min, max] = range.split('-').map(Number);
                             return max / Number(denom);
                         } else {
                             // For single rates like "1/128"
-                            const [num, denom] = rateStr.split('/').map(Number);
+                            const [num, denom] = rate.split('/').map(Number);
                             return num / denom;
                         }
                     };
 
-                    const rateA = getWorstRate(a.rate);
-                    const rateB = getWorstRate(b.rate);
-                    const sortOrder = sortOption === "asc" ? 1 : -1;
-                    return (rateA - rateB) * sortOrder;
+                    const rateA = getRateValue(a.rate);
+                    const rateB = getRateValue(b.rate);
+                    // Most Common First (asc) shows highest rates first
+                    // Most Rare First (desc) shows lowest rates first
+                    return sortOption === "asc" ? rateB - rateA : rateA - rateB;
                 });
 
                 aggregatedDrops.forEach(drop => {
