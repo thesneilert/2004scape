@@ -55,11 +55,13 @@
                                                         <tr>
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
-                                                                    <b>Sort by Rarity</b><br>
-                                                                    <select id="rarityToggle"
-                                                                        onchange="toggleRaritySort()">
+                                                                    <b>Sort by</b><br>
+                                                                    <select id="sortToggle"
+                                                                        onchange="toggleSort()">
                                                                         <option value="asc">Most Common First</option>
                                                                         <option value="desc">Most Rare First</option>
+                                                                        <option value="name-asc">Name (A-Z)</option>
+                                                                        <option value="name-desc">Name (Z-A)</option>
                                                                     </select>
                                                                 </div>
                                                             </td>
@@ -159,7 +161,13 @@
                                         <br>
                                         <a href="#" class="whitelink" onclick="showHowToUse(); return false;">How to
                                             Use</a>
-                                        <span style="margin: 0 10px;">|</span>
+                                        <span style="margin: 0 5px;">|</span>
+                                        <label class="switch">
+                                            <input type="checkbox" id="saveSettingsToggle" checked>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <span class="toggle-label">Save Settings</span>
+                                        <span style="margin: 0 5px;">|</span>
                                         <a href="https://x.com/thesneilert" class="whitelink">Made by Eilert</a>
                                         <br>
                                         <br>
@@ -375,20 +383,25 @@
 
         // Function to toggle between F2P and P2P NPCs
         function toggleMembership() {
-    const toggle = document.getElementById("membershipToggle");
-    if (toggle.value === "f2p") {
-        activeDropFiles = [...f2pDropFiles];
-    } else {
-        activeDropFiles = [...p2pDropFiles];
-    }
+            const toggle = document.getElementById("membershipToggle");
+            if (toggle.value === "f2p") {
+                activeDropFiles = [...f2pDropFiles];
+            } else {
+                activeDropFiles = [...p2pDropFiles];
+            }
 
-    populateDropdown();
-    document.getElementById("monsterDropdown").value = "";
-    document.querySelector("#dropTable tbody").innerHTML = "";
-    
-    // Clear any existing search results
-    document.getElementById("searchResults").style.display = "none";
-}
+            // Save the membership preference to local storage only if save settings is enabled
+            if (document.getElementById("saveSettingsToggle").checked) {
+                localStorage.setItem('membershipPreference', toggle.value);
+            }
+
+            populateDropdown();
+            document.getElementById("monsterDropdown").value = "";
+            document.querySelector("#dropTable tbody").innerHTML = "";
+            
+            // Clear any existing search results
+            document.getElementById("searchResults").style.display = "none";
+        }
 
         // Function to fetch and parse a single .rs2 file
         async function fetchDropTable(fileName) {
@@ -591,7 +604,7 @@
                                                             <img src="${imageUrl}" alt="${drop.item}" width="32" height="32" onerror="this.src='https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651'">
                                                         </td>
                                                         <td>${drop.item}${drop.members ? ' <span class="members">(Members)</span>' : ''}</td>
-                                                        <td>${drop.rate}</td>
+                                                        <td>${drop.rate.includes("Infinity") ? drop.rate.replace("Infinity", "~") : drop.rate}</td>
                                                     </tr>
                                                 `;
             }).join('')}
@@ -733,6 +746,19 @@
                 });
 
                 aggregatedDrops.sort((a, b) => {
+                    const sortOption = document.getElementById("sortToggle").value;
+                    
+                    // Sort by name (A-Z)
+                    if (sortOption === "name-asc") {
+                        return a.item.localeCompare(b.item);
+                    }
+                    
+                    // Sort by name (Z-A)
+                    if (sortOption === "name-desc") {
+                        return b.item.localeCompare(a.item);
+                    }
+                    
+                    // Default sorting by rarity (asc or desc)
                     // Helper function to get the worst (highest) rate from a rate string
                     const getWorstRate = (rateStr) => {
                         if (rateStr.includes('-')) {
@@ -749,7 +775,7 @@
 
                     const rateA = getWorstRate(a.rate);
                     const rateB = getWorstRate(b.rate);
-                    const sortOrder = document.getElementById("rarityToggle").value === "asc" ? 1 : -1;
+                    const sortOrder = sortOption === "asc" ? 1 : -1;
                     return (rateA - rateB) * sortOrder;
                 });
 
@@ -853,7 +879,8 @@
                     quantityCell.textContent = drop.quantity;
 
                     const rateCell = document.createElement("td");
-                    rateCell.textContent = drop.rate;
+                    const rateDisplay = drop.rate.includes("Infinity") ? drop.rate.replace("Infinity", "~") : drop.rate;
+                    rateCell.textContent = rateDisplay;
 
                     row.appendChild(imageCell);
                     row.appendChild(itemCell);
@@ -1000,8 +1027,14 @@
         document.getElementById("searchInput").oninput = debouncedSearch;
 
         // Add this new function after the toggleMembership function
-        function toggleRaritySort() {
+        function toggleSort() {
             const dropdown = document.getElementById("monsterDropdown");
+            // Save the sort preference to local storage only if save settings is enabled
+            if (document.getElementById("saveSettingsToggle").checked) {
+                const sortToggle = document.getElementById("sortToggle");
+                localStorage.setItem('sortPreference', sortToggle.value);
+            }
+            
             if (dropdown.value) {
                 loadDropTable();
             }
@@ -1098,6 +1131,41 @@
             };
         }
 
+        // Add this new function before window.onload
+        function restoreUserPreferences() {
+            // Only restore preferences if save settings is enabled
+            if (!document.getElementById("saveSettingsToggle").checked) {
+                return;
+            }
+
+            // Restore membership preference
+            const membershipPreference = localStorage.getItem('membershipPreference');
+            if (membershipPreference) {
+                const membershipToggle = document.getElementById("membershipToggle");
+                membershipToggle.value = membershipPreference;
+                toggleMembership();
+            }
+
+            // Restore sort preference
+            const sortPreference = localStorage.getItem('sortPreference');
+            if (sortPreference) {
+                const sortToggle = document.getElementById("sortToggle");
+                sortToggle.value = sortPreference;
+            }
+        }
+
+        // Add event listener for the save settings toggle
+        document.getElementById("saveSettingsToggle").addEventListener("change", function() {
+            // Save the toggle state itself
+            localStorage.setItem('saveSettingsEnabled', this.checked);
+            
+            if (!this.checked) {
+                // Clear saved preferences when toggle is turned off
+                localStorage.removeItem('membershipPreference');
+                localStorage.removeItem('sortPreference');
+            }
+        });
+
         window.onload = async () => {
             showLoader();
             const allFiles = [...f2pDropFiles, ...p2pDropFiles];
@@ -1106,6 +1174,15 @@
             }
             populateDropdown();
             enableUI();
+            
+            // Restore the save settings toggle state
+            const saveSettingsEnabled = localStorage.getItem('saveSettingsEnabled');
+            if (saveSettingsEnabled !== null) {
+                document.getElementById("saveSettingsToggle").checked = saveSettingsEnabled === 'true';
+            }
+            
+            // Restore user preferences after UI is enabled
+            restoreUserPreferences();
             hideLoader();
         };
     </script>

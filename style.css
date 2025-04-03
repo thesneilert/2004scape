@@ -16,6 +16,9 @@ select {
     justify-content: center;
     height: 70px;
     position: relative;
+    background: url('img/stoneback.gif');
+    padding: 10px;
+    text-align: center;
 }
 
 .stone-box b {
@@ -64,6 +67,8 @@ select {
 
 .modal-header {
     position: relative;
+    padding: 10px;
+    border-bottom: 1px solid #666;
 }
 
 .search-results {
@@ -79,6 +84,8 @@ select {
     top: 70px;
     left: 50%;
     transform: translateX(-50%);
+    border-radius: 4px;
+    margin-top: 5px;
 }
 
 .search-result-item {
@@ -86,6 +93,8 @@ select {
     cursor: pointer;
     color: white;
     transition: background-color 0.2s;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
 }
 
 .search-result-item:hover {
@@ -104,6 +113,8 @@ select {
     color: #ffd700;
     font-size: 0.8em;
     margin-left: 4px;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .loader {
@@ -155,11 +166,6 @@ select {
     position: relative;
 }
 
-.modal-header {
-    padding: 10px;
-    border-bottom: 1px solid #666;
-}
-
 .modal-body {
     padding: 20px;
 }
@@ -191,25 +197,6 @@ select {
     max-width: 180px;
 }
 
-.search-results {
-    border-radius: 4px;
-    margin-top: 5px;
-    max-height: 150px;
-    overflow-y: auto;
-}
-
-.search-result-item {
-    padding: 5px;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.search-result-item:hover {
-    background-color: #570700;
-}
-
 .dropdown select {
     padding: 5px;
     font-size: 14px;
@@ -220,12 +207,6 @@ select {
     border-radius: 4px;
     width: 100%;
     max-width: 180px;
-}
-
-.stone-box {
-    background: url('img/stoneback.gif');
-    padding: 10px;
-    text-align: center;
 }
 
 BODY,
@@ -331,10 +312,6 @@ A.pink:hover {
     text-decoration: underline
 }
 
-.hidden {
-    display: none;
-}
-
 .rare-drop-table {
     width: 100%;
     border-collapse: collapse;
@@ -367,13 +344,6 @@ A.pink:hover {
     background-color: #000;
 }
 
-.members {
-    color: #90c040;
-    font-style: italic;
-    font-size: 11px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
 /* Update the clickable items in the main table */
 #dropTable td[onclick] {
     cursor: pointer;
@@ -384,4 +354,69 @@ A.pink:hover {
 
 #dropTable td[onclick]:hover {
     color: #fff;
+}
+
+/* Toggle Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 15px;
+    vertical-align: middle;
+    margin: 0 2px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #2a2a2a;
+    transition: .4s;
+    border: 1px solid #474747;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 11px;
+    width: 11px;
+    left: 2px;
+    bottom: 1px;
+    background-color: #90c040;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2a2a2a;
+    border-color: #90c040;
+}
+
+input:checked + .slider:before {
+    transform: translateX(17px);
+}
+
+.slider.round {
+    border-radius: 15px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.toggle-label {
+    color: #90c040;
+    font-size: 11px;
+    vertical-align: middle;
+    font-family: Arial,Helvetica,sans-serif;
+    display: inline-block;
+    margin-left: 3px;
 }
