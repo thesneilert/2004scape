@@ -676,7 +676,81 @@
             };
         }
 
-        // Modify the loadDropTable function to add click handlers for rare drop table items
+        // Define bone drops for different NPCs
+        const boneDrops = {
+            // F2P NPCs
+            "bandit": { item: "Bones", icon: "bones.webp" },
+            "barbarian": { item: "Bones", icon: "bones.webp" },
+            "bear": { item: "Big Bones", icon: "big_bones.webp" },
+            "black_knight": { item: "Bones", icon: "bones.webp" },
+            "chicken": { item: "Bones", icon: "bones.webp" },
+            "cow": { item: "Bones", icon: "bones.webp" },
+            "dark_warrior": { item: "Bones", icon: "bones.webp" },
+            "dark_wizard": { item: "Bones", icon: "bones.webp" },
+            "druid": { item: "Bones", icon: "bones.webp" },
+            "dwarf": { item: "Bones", icon: "bones.webp" },
+            "earth_warrior": { item: "Bones", icon: "bones.webp" },
+            "farmer": { item: "Bones", icon: "bones.webp" },
+            "giant": { item: "Big Bones", icon: "big_bones.webp" },
+            "giant_rat": { item: "Bones", icon: "bones.webp" },
+            "goblin": { item: "Bones", icon: "bones.webp" },
+            "greater_demon": { item: "Ashes", icon: "ashes.webp" },
+            "guard": { item: "Bones", icon: "bones.webp" },
+            "highwayman": { item: "Bones", icon: "bones.webp" },
+            "hobgoblin": { item: "Bones", icon: "bones.webp" },
+            "ice_giant": { item: "Big Bones", icon: "big_bones.webp" },
+            "ice_warrior": { item: "Bones", icon: "bones.webp" },
+            "imp": { item: "Ashes", icon: "ashes.webp" },
+            "jonny_the_beard": { item: "Bones", icon: "bones.webp" },
+            "lesser_demon": { item: "Ashes", icon: "ashes.webp" },
+            "man": { item: "Bones", icon: "bones.webp" },
+            "moss_giant": { item: "Big Bones", icon: "big_bones.webp" },
+            "mugger": { item: "Bones", icon: "bones.webp" },
+            "pirate": { item: "Bones", icon: "bones.webp" },
+            "rat": { item: "Bones", icon: "bones.webp" },
+            "skeleton": { item: "Bones", icon: "bones.webp" },
+            "thug": { item: "Bones", icon: "bones.webp" },
+            "unicorn": { item: "Unicorn Bone", icon: "unicorn_bone.webp" },
+            "wizard": { item: "Bones", icon: "bones.webp" },
+            "zombie": { item: "Bones", icon: "bones.webp" },
+
+            // P2P NPCs
+            "bandit_camp_leaders": { item: "Bones", icon: "bones.webp" },
+            "black_demon": { item: "Ashes", icon: "ashes.webp" },
+            "black_dragon": { item: "Dragon Bones", icon: "dragon_bones.webp" },
+            "blue_dragon": { item: "Dragon Bones", icon: "dragon_bones.webp" },
+            "chaos_druid": { item: "Bones", icon: "bones.webp" },
+            "chaos_druid_warrior": { item: "Bones", icon: "bones.webp" },
+            "chaos_dwarf": { item: "Bones", icon: "bones.webp" },
+            "entrana_firebird": { item: "Ashes", icon: "ashes.webp" },
+            "fire_giant": { item: "Big Bones", icon: "big_bones.webp" },
+            "green_dragon": { item: "Dragon Bones", icon: "dragon_bones.webp" },
+            "grip": { item: "Bones", icon: "bones.webp" },
+            "guard_dog": { item: "Bones", icon: "bones.webp" },
+            "hellhound": { item: "Bones", icon: "bones.webp" },
+            "jailer": { item: "Bones", icon: "bones.webp" },
+            "jogre": { item: "Jogre Bones", icon: "jogre_bones.webp" },
+            "necromancer": { item: "Bones", icon: "bones.webp" },
+            "oomlie_bird": { item: "Bones", icon: "bones.webp" },
+            "otherwordly_being": { item: "Bones", icon: "bones.webp" },
+            "paladin": { item: "Bones", icon: "bones.webp" },
+            "red_dragon": { item: "Dragon Bones", icon: "dragon_bones.webp" },
+            "rogue": { item: "Bones", icon: "bones.webp" },
+            "salarin_the_twisted": { item: "Bones", icon: "bones.webp" },
+            "shadow_warrior": { item: "Bones", icon: "bones.webp" },
+            "tribesman": { item: "Bones", icon: "bones.webp" },
+            "ugthanki": { item: "Bones", icon: "bones.webp" },
+            "white_knight": { item: "Bones", icon: "bones.webp" },
+            "yanille_soldier_tower_guard": { item: "Bones", icon: "bones.webp" }
+        };
+
+        // Function to get bone drop for an NPC
+        function getBoneDrop(npcFile) {
+            const npcName = npcFile.replace(".rs2", "");
+            return boneDrops[npcName];
+        }
+
+        // Modify the loadDropTable function to include bones
         async function loadDropTable() {
             const dropdown = document.getElementById("monsterDropdown");
             const selectedFile = dropdown.value;
@@ -688,6 +762,16 @@
                 const drops = await fetchDropTable(selectedFile);
                 const aggregatedDrops = [];
                 const itemMap = new Map();
+
+                // Add bone drop if applicable
+                const boneDrop = getBoneDrop(selectedFile);
+                if (boneDrop) {
+                    aggregatedDrops.push({
+                        item: boneDrop.item,
+                        quantity: "1",
+                        rate: "1/1"
+                    });
+                }
 
                 drops.forEach(drop => {
                     const lowerCaseItem = drop.item.toLowerCase();
