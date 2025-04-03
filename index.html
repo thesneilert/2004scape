@@ -24,6 +24,7 @@
             align-items: center;
             justify-content: center;
             height: 70px;
+            position: relative;
         }
         .stone-box b {
             margin-bottom: 5px;
@@ -37,6 +38,7 @@
             color: white;
             border: 1px solid #666;
             margin: 0;
+            autocomplete: off;
         }
         #searchInput::placeholder {
             color: #999;
@@ -49,6 +51,111 @@
         }
         .clickable-item:hover {
             color: #a8d050;
+        }
+        .close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #90c040;
+        }
+        .close:hover {
+            color: #a8d050;
+        }
+        .modal-header {
+            position: relative;
+        }
+        .search-results {
+            position: absolute;
+            background-color: #474747;
+            border: 1px solid #666;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            width: 180px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .search-result-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.2s;
+        }
+        .search-result-item:hover {
+            background-color: #666;
+        }
+        .search-result-item:active {
+            background-color: #90c040;
+        }
+        .highlight {
+            background-color: rgba(144, 192, 64, 0.2);
+        }
+        .members {
+            color: #ffd700;
+            font-size: 0.8em;
+            margin-left: 4px;
+        }
+        .loader {
+            border: 4px solid #474747;
+            border-top: 4px solid #90c040;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        .loading-text {
+            color: #90c040;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #474747;
+            border: 1px solid #666;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-header {
+            padding: 10px;
+            border-bottom: 1px solid #666;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .monster-name {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        .monster-info {
+            font-size: 11px;
+            color: #999;
         }
     </style>
 </head>
@@ -138,6 +245,7 @@
                                                                     <b>Search for an item</b><br>
                                                                     <input type="text" id="searchInput"
                                                                         placeholder="Search..." oninput="searchItems()"
+                                                                        autocomplete="off"
                                                                         disabled>
                                                                     <div id="searchResults" class="search-results"
                                                                         background=img/title/shinystonered.jpg></div>
@@ -198,9 +306,9 @@
                                 <td valign="bottom">
                                     <div align="center" style="font-family:Arial,Helvetica,sans-serif; font-size:11px;">
                                         <br>
-                                        <a href="https://x.com/thesneilert" class="whitelink">Made by Eilert</a>
-                                        <span style="margin: 0 10px;">|</span>
                                         <a href="#" class="whitelink" onclick="showHowToUse(); return false;">How to Use</a>
+                                        <span style="margin: 0 10px;">|</span>
+                                        <a href="https://x.com/thesneilert" class="whitelink">Made by Eilert</a>
                                         <br>
                                         <br>
                                     </div>
@@ -848,8 +956,22 @@
                     imageElement.width = 32;
                     imageElement.height = 32;
                     imageElement.onerror = function () {
-                        // Fallback to coins image if the specific one isn't found
-                        this.src = getImageUrl(customItems.coins);
+                        // Try multiple fallback images in sequence
+                        const fallbacks = [
+                            getImageUrl(customItems.coins),
+                            'https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651',
+                            'https://lostcity.markets/img/items/coins.webp'
+                        ];
+                        let currentFallback = 0;
+                        
+                        const tryNextFallback = () => {
+                            if (currentFallback < fallbacks.length) {
+                                this.src = fallbacks[currentFallback++];
+                            }
+                        };
+                        
+                        this.onerror = tryNextFallback;
+                        tryNextFallback();
                     };
                     imageCell.appendChild(imageElement);
 
@@ -916,49 +1038,112 @@
             });
         }
 
+        // Add debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
         async function searchItems() {
-            const searchInput = document.getElementById("searchInput").value.toLowerCase();
+            const searchInput = document.getElementById("searchInput").value.toLowerCase().trim();
             const searchResults = document.getElementById("searchResults");
             searchResults.innerHTML = "";
 
-            if (searchInput.length < 2) return;
-
-            const results = [];
-            const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
-
-            for (const file of activeDropFiles) {
-                const drops = await fetchDropTable(file);
-                const matchingDrops = drops.filter(drop => {
-                    const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
-                    return normalizedItemName.includes(normalizedSearchInput);
-                });
-
-                if (matchingDrops.length > 0) {
-                    results.push({
-                        monster: formatMonsterName(file.replace(".rs2", "")),
-                        file: file
-                    });
-                }
+            if (searchInput.length < 2) {
+                searchResults.style.display = "none";
+                return;
             }
 
-            if (results.length > 0) {
-                results.forEach(result => {
-                    const resultItem = document.createElement("div");
-                    resultItem.className = "search-result-item";
-                    resultItem.textContent = result.monster;
-                    resultItem.onclick = () => {
-                        document.getElementById("monsterDropdown").value = result.file;
-                        loadDropTable();
-                    };
-                    searchResults.appendChild(resultItem);
-                });
-            } else {
-                const noResults = document.createElement("div");
-                noResults.className = "search-result-item";
-                noResults.textContent = "No results found.";
-                searchResults.appendChild(noResults);
+            try {
+                const results = [];
+                const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
+
+                // Search through both F2P and P2P files
+                const allFiles = [...f2pDropFiles, ...p2pDropFiles];
+                const maxFilesToSearch = 20;
+                const filesToSearch = allFiles.slice(0, maxFilesToSearch);
+
+                for (const file of filesToSearch) {
+                    const drops = await fetchDropTable(file);
+                    // Create a Set of unique matching items to prevent duplicate counting
+                    const uniqueMatchingItems = new Set();
+                    
+                    drops.forEach(drop => {
+                        const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
+                        if (normalizedItemName.includes(normalizedSearchInput)) {
+                            uniqueMatchingItems.add(drop.item); // Add to Set to ensure uniqueness
+                        }
+                    });
+
+                    if (uniqueMatchingItems.size > 0) {
+                        const isP2P = p2pDropFiles.includes(file);
+                        results.push({
+                            monster: formatMonsterName(file.replace(".rs2", "")),
+                            file: file,
+                            matchCount: uniqueMatchingItems.size, // Use Set size for unique count
+                            isP2P: isP2P
+                        });
+                    }
+                }
+
+                // Sort results by number of matches
+                results.sort((a, b) => b.matchCount - a.matchCount);
+
+                if (results.length > 0) {
+                    searchResults.style.display = "block";
+                    results.forEach(result => {
+                        const resultItem = document.createElement("div");
+                        resultItem.className = "search-result-item";
+                        
+                        // Create two-line layout
+                        const membershipStatus = result.isP2P ? '(P2P)' : '(F2P)';
+                        resultItem.innerHTML = `
+                            <div class="monster-name">${result.monster}</div>
+                            <div class="monster-info">${result.matchCount} matches ${membershipStatus}</div>
+                        `;
+                        
+                        resultItem.onclick = () => {
+                            // Set the membership toggle to match the monster's type
+                            document.getElementById("membershipToggle").value = result.isP2P ? "p2p" : "f2p";
+                            // Update active drop files based on membership
+                            activeDropFiles = result.isP2P ? [...p2pDropFiles] : [...f2pDropFiles];
+                            // Update dropdown and select monster
+                            populateDropdown();
+                            document.getElementById("monsterDropdown").value = result.file;
+                            loadDropTable();
+                            searchResults.style.display = "none";
+                        };
+                        searchResults.appendChild(resultItem);
+                    });
+                } else {
+                    searchResults.style.display = "block";
+                    const noResults = document.createElement("div");
+                    noResults.className = "search-result-item";
+                    noResults.textContent = "No results found.";
+                    searchResults.appendChild(noResults);
+                }
+            } catch (error) {
+                console.error("Error during search:", error);
+                searchResults.style.display = "block";
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "search-result-item";
+                errorMessage.textContent = "An error occurred while searching.";
+                searchResults.appendChild(errorMessage);
             }
         }
+
+        // Debounce the search function
+        const debouncedSearch = debounce(searchItems, 300);
+
+        // Update the search input event listener
+        document.getElementById("searchInput").oninput = debouncedSearch;
 
         // Add this new function after the toggleMembership function
         function toggleRaritySort() {
