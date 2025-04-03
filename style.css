@@ -107,7 +107,7 @@ select {
 }
 
 .loader {
-    border: 6px solid #f3f3f3;
+    border: 6px solid rgba(243, 243, 243, 0.3);
     border-top: 6px solid #90c040;
     border-radius: 50%;
     width: 50px;
