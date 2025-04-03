@@ -77,6 +77,7 @@
                                                                     <b>Membership</b><br>
                                                                     <select id="membershipToggle"
                                                                         onchange="toggleMembership()">
+                                                                        <option value="all">All</option>
                                                                         <option value="f2p">Free-to-Play</option>
                                                                         <option value="p2p">Members</option>
                                                                     </select>
@@ -386,8 +387,10 @@
             const toggle = document.getElementById("membershipToggle");
             if (toggle.value === "f2p") {
                 activeDropFiles = [...f2pDropFiles];
-            } else {
+            } else if (toggle.value === "p2p") {
                 activeDropFiles = [...p2pDropFiles];
+            } else if (toggle.value === "all") {
+                activeDropFiles = [...f2pDropFiles, ...p2pDropFiles];
             }
 
             // Save the membership preference to local storage only if save settings is enabled
@@ -1072,11 +1075,27 @@
             defaultOption.textContent = "Select...";
             dropdown.appendChild(defaultOption);
 
-            activeDropFiles.forEach(file => {
-                const option = document.createElement("option");
-                option.value = file;
-                option.textContent = formatMonsterName(file.replace(".rs2", ""));
-                dropdown.appendChild(option);
+            // Get the current membership selection
+            const membershipToggle = document.getElementById("membershipToggle");
+            const isAllSelected = membershipToggle.value === "all";
+
+            // Create array of options with their formatted names
+            const options = activeDropFiles.map(file => ({
+                value: file,
+                text: formatMonsterName(file.replace(".rs2", ""))
+            }));
+
+            // Sort alphabetically if "All" is selected
+            if (isAllSelected) {
+                options.sort((a, b) => a.text.localeCompare(b.text));
+            }
+
+            // Add the sorted options to the dropdown
+            options.forEach(option => {
+                const optionElement = document.createElement("option");
+                optionElement.value = option.value;
+                optionElement.textContent = option.text;
+                dropdown.appendChild(optionElement);
             });
         }
 
