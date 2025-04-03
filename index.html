@@ -225,39 +225,49 @@
         // Current active drop files (default to F2P)
         let activeDropFiles = [...f2pDropFiles];
 
-
-        this.customItems = {
-            "~randomherb": { name: "Random Herb", image: "guam_leaf.webp" },
-            "~randomjewel": { name: "Random Jewel", image: "dragonstone.webp" },
-            "~ultrarare_getitem": { name: "Rare Drop Table", image: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" },
-            "~megararetable": { name: "Mega Rare Table", image: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" },
-            "3dose1defense": { name: "Defence Potion(3)", image: "3dose1defense.webp" },
-            "2dose1strength": { name: "Strength Potion(2)", image: "2dose1strength.webp" },
-            "1dose2defense": { name: "Defence Potion(1)", image: "1dose2defense.webp" },
-            // Add tertiary drops
-            "~trail_easycluedrop": { name: "Easy Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            "~trail_mediumcluedrop": { name: "Medium Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            "~trail_hardcluedrop": { name: "Hard Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            "~trail_elitecluedrop": { name: "Elite Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            "~trail_mastercluedrop": { name: "Master Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            // Special items with fixed URLs
-            "coins": { name: "Coins", image: "https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651" },
-            "clue_scroll": { name: "Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            // Add aliases for special items
-            "rare drop table": { name: "Rare Drop Table", image: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" },
-            "mega rare table": { name: "Mega Rare Table", image: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" },
-            "easy clue scroll": { name: "Easy Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            "medium clue scroll": { name: "Medium Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            "hard clue scroll": { name: "Hard Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            "elite clue scroll": { name: "Elite Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            "master clue scroll": { name: "Master Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
-            // Add new items with OSRS Wiki URLs
-            "fire_feather": { name: "Fire Feather", image: "https://oldschool.runescape.wiki/images/Fire_feather.png?3859a" },
-            "jail_key": { name: "Jail Key", image: "https://oldschool.runescape.wiki/images/Jail_key.png?c27a4" },
-            "rats_tail": { name: "Rats Tail", image: "https://oldschool.runescape.wiki/images/Rat%27s_tail.png?219da" },
-            // Add trail check drops
-            "~trail_checkmediumdrop": { name: "Medium Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" }
+        // Define item categories for better organization
+        const itemCategories = {
+            POTIONS: {
+                "3dose1defense": { name: "Defence Potion(3)", image: "3dose1defense.webp" },
+                "2dose1strength": { name: "Strength Potion(2)", image: "2dose1strength.webp" },
+                "1dose2defense": { name: "Defence Potion(1)", image: "1dose2defense.webp" }
+            },
+            CLUE_SCROLLS: {
+                "~trail_easycluedrop": { name: "Easy Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "~trail_mediumcluedrop": { name: "Medium Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "~trail_hardcluedrop": { name: "Hard Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "~trail_elitecluedrop": { name: "Elite Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "~trail_mastercluedrop": { name: "Master Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "~trail_checkmediumdrop": { name: "Medium Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" }
+            },
+            RARE_DROPS: {
+                "~randomherb": { name: "Random Herb", image: "guam_leaf.webp" },
+                "~randomjewel": { name: "Random Jewel", image: "dragonstone.webp" },
+                "~ultrarare_getitem": { name: "Rare Drop Table", image: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" },
+                "~megararetable": { name: "Mega Rare Table", image: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" }
+            },
+            SPECIAL_ITEMS: {
+                "coins": { name: "Coins", image: "https://oldschool.runescape.wiki/images/Coins_10000.png?7fa38&20200722174651" },
+                "clue_scroll": { name: "Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "fire_feather": { name: "Fire Feather", image: "https://oldschool.runescape.wiki/images/Fire_feather.png?3859a" },
+                "jail_key": { name: "Jail Key", image: "https://oldschool.runescape.wiki/images/Jail_key.png?c27a4" },
+                "rats_tail": { name: "Rats Tail", image: "https://oldschool.runescape.wiki/images/Rat%27s_tail.png?219da" }
+            },
+            ALIASES: {
+                "rare drop table": { name: "Rare Drop Table", image: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" },
+                "mega rare table": { name: "Mega Rare Table", image: "https://oldschool.runescape.wiki/images/Mega-rare_drop_table.png?21a00" },
+                "easy clue scroll": { name: "Easy Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "medium clue scroll": { name: "Medium Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "hard clue scroll": { name: "Hard Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "elite clue scroll": { name: "Elite Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" },
+                "master clue scroll": { name: "Master Clue Scroll", image: "https://oldschool.runescape.wiki/images/Clue_scroll_v1.png?f270a" }
+            }
         };
+
+        // Flatten the categories into a single customItems object
+        this.customItems = Object.values(itemCategories).reduce((acc, category) => {
+            return { ...acc, ...category };
+        }, {});
 
         // Rare Drop Table data with specific icon mappings
         const rareDropTable = {
@@ -708,14 +718,21 @@
                     let imageUrl;
                     const lowerCaseItem = drop.item.toLowerCase();
                     
-                    // First try to find an exact match
+                    // Helper function to get image URL from custom item
+                    const getImageUrl = (item) => {
+                        if (!item) return null;
+                        return item.image.startsWith('http') 
+                            ? item.image 
+                            : `https://lostcity.markets/img/items/${item.image}`;
+                    };
+
+                    // Try to find the item in customItems
                     let customItem = customItems[lowerCaseItem];
                     
                     // If no exact match, try to find a partial match
                     if (!customItem) {
                         for (const [key, value] of Object.entries(customItems)) {
                             const lowerKey = key.toLowerCase();
-                            // Check if the item name contains the key or vice versa
                             if (lowerCaseItem.includes(lowerKey) || lowerKey.includes(lowerCaseItem)) {
                                 customItem = value;
                                 break;
@@ -734,9 +751,7 @@
                     }
 
                     if (customItem) {
-                        imageUrl = customItem.image.startsWith('http') 
-                            ? customItem.image 
-                            : `https://lostcity.markets/img/items/${customItem.image}`;
+                        imageUrl = getImageUrl(customItem);
                         console.log(`Found custom item: ${drop.item} -> ${imageUrl}`);
                     } else {
                         // Default case - try to construct from item name
@@ -752,7 +767,7 @@
                     imageElement.height = 32;
                     imageElement.onerror = function () {
                         // Fallback to coins image if the specific one isn't found
-                        this.src = customItems.coins.image;
+                        this.src = getImageUrl(customItems.coins);
                     };
                     imageCell.appendChild(imageElement);
 
