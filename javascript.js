@@ -1208,4 +1208,4 @@ function loadCSS(filename){
     file.setAttribute("href", filename);
     document.head.appendChild(file);
 }
-loadCSS("style.css");
+loadCSS("pages/main/thesneilert/style.css");
