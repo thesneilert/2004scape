@@ -14,21 +14,31 @@
 }
 
 .migration-popup-header {
-    background-color: #382418;
+    background-color: #000000;
     padding: 10px;
     text-align: center;
     font-weight: bold;
     color: white;
-    border-bottom: 2px solid #570700;
+    border-bottom: 2px solid #382418;
+}
+
+.migrated-2004-hq-text-green {
+    color: #90c040;
+}
+
+.migrated-2004-hq-text-green:hover {
+    text-decoration: underline;
 }
 
 .migration-popup-content {
+    background: url('img/background.png') repeat;
     padding: 20px;
     text-align: center;
     line-height: 1.5;
 }
 
 .migration-popup-buttons {
+    background: url('img/background.png') repeat;
     display: flex;
     justify-content: center;
     gap: 20px;
