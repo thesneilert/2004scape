@@ -1,4 +1,82 @@
 /* Styles from index.html */
+/* Migration Popup Styles */
+.migration-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #000;
+    border: 2px solid #382418;
+    z-index: 2000;
+    padding: 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.migration-popup-header {
+    background-color: #382418;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    border-bottom: 2px solid #570700;
+}
+
+.migration-popup-content {
+    padding: 20px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.migration-popup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 0 20px 20px;
+}
+
+.migration-popup-button {
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+    min-width: 120px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.migration-popup-button-gray {
+    background: url('img/shinystonered.jpg') repeat;
+    border: 2px outset #570700;
+}
+
+.migration-popup-button-red {
+    background: url('img/stoneback.gif') repeat;
+    border: 2px outset #373737;
+}
+
+.migration-popup-button:hover {
+    opacity: 0.9;
+}
+
+.migration-popup-button:active {
+    border-style: inset;
+}
+
+.migration-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
 select, #searchInput {
     width: 180px;
     height: 25px;

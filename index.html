@@ -56,8 +56,7 @@
                                                             <td class=b bgcolor=#474747 background=img/stoneback.gif>
                                                                 <div class="stone-box">
                                                                     <b>Sort by</b><br>
-                                                                    <select id="sortToggle"
-                                                                        onchange="toggleSort()">
+                                                                    <select id="sortToggle" onchange="toggleSort()">
                                                                         <option value="asc">Most Common First</option>
                                                                         <option value="desc">Most Rare First</option>
                                                                         <option value="name-asc">Name (A-Z)</option>
@@ -401,7 +400,7 @@
             populateDropdown();
             document.getElementById("monsterDropdown").value = "";
             document.querySelector("#dropTable tbody").innerHTML = "";
-            
+
             // Clear any existing search results
             document.getElementById("searchResults").style.display = "none";
         }
@@ -544,7 +543,7 @@
 
         // Function to convert fraction to 1/x format with rounded denominator
         function convertToOneOverX(numerator, denominator) {
-            const roundedDenominator = Math.round(denominator/numerator);
+            const roundedDenominator = Math.round(denominator / numerator);
             return `1/${roundedDenominator}`;
         }
 
@@ -575,7 +574,7 @@
                 } else {
                     // Convert the rate for new items to 1/x format
                     const [num, denom] = drop.rate.split('/').map(Number);
-                    acc.push({ 
+                    acc.push({
                         ...drop,
                         rate: convertToOneOverX(num, denom)
                     });
@@ -881,17 +880,17 @@
 
                 aggregatedDrops.sort((a, b) => {
                     const sortOption = document.getElementById("sortToggle").value;
-                    
+
                     // Sort by name (A-Z)
                     if (sortOption === "name-asc") {
                         return a.item.localeCompare(b.item);
                     }
-                    
+
                     // Sort by name (Z-A)
                     if (sortOption === "name-desc") {
                         return b.item.localeCompare(a.item);
                     }
-                    
+
                     // Helper function to get the rate as a number for comparison
                     const getRateValue = (rate) => {
                         if (rate === "1/1" || rate.includes("infinity") || rate.includes("Infinity")) {
@@ -1026,7 +1025,7 @@
                         }
                         const gcd = (a, b) => b ? gcd(b, a % b) : a;
                         const divisor = gcd(numerator, denominator);
-                        return `${numerator/divisor}/${denominator/divisor}`;
+                        return `${numerator / divisor}/${denominator / divisor}`;
                     };
 
                     // Handle rate display with simplification
@@ -1113,106 +1112,106 @@
         }
 
         async function searchItems() {
-    const searchInput = document.getElementById("searchInput").value.toLowerCase().trim();
-    const searchResults = document.getElementById("searchResults");
-    searchResults.innerHTML = "";
+            const searchInput = document.getElementById("searchInput").value.toLowerCase().trim();
+            const searchResults = document.getElementById("searchResults");
+            searchResults.innerHTML = "";
 
-    if (searchInput.length < 2) {
-        searchResults.style.display = "none";
-        return;
-    }
-
-    try {
-        const results = [];
-        const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
-
-        // Search through ALL files (both F2P and P2P) regardless of current view
-        const allFiles = [...f2pDropFiles, ...p2pDropFiles];
-
-        // Remove the limit to search through all files
-        for (const file of allFiles) {
-            const drops = await fetchDropTable(file);
-            const uniqueMatchingItems = new Set();
-            
-            drops.forEach(drop => {
-                const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
-                if (normalizedItemName.includes(normalizedSearchInput)) {
-                    uniqueMatchingItems.add(drop.item);
-                }
-            });
-
-            if (uniqueMatchingItems.size > 0) {
-                const isP2P = p2pDropFiles.includes(file);
-                results.push({
-                    monster: formatMonsterName(file.replace(".rs2", "")),
-                    file: file,
-                    matchCount: uniqueMatchingItems.size,
-                    isP2P: isP2P
-                });
+            if (searchInput.length < 2) {
+                searchResults.style.display = "none";
+                return;
             }
-        }
 
-        // Sort results by number of matches
-        results.sort((a, b) => b.matchCount - a.matchCount);
+            try {
+                const results = [];
+                const normalizedSearchInput = searchInput.replace(/[\s_]+/g, "").toLowerCase();
 
-        if (results.length > 0) {
-            searchResults.style.display = "block";
-            results.forEach(result => {
-                const resultItem = document.createElement("div");
-                resultItem.className = "search-result-item";
-                
-                // Highlight P2P results differently
-                const membershipClass = result.isP2P ? "p2p-result" : "f2p-result";
-                resultItem.innerHTML = `
+                // Search through ALL files (both F2P and P2P) regardless of current view
+                const allFiles = [...f2pDropFiles, ...p2pDropFiles];
+
+                // Remove the limit to search through all files
+                for (const file of allFiles) {
+                    const drops = await fetchDropTable(file);
+                    const uniqueMatchingItems = new Set();
+
+                    drops.forEach(drop => {
+                        const normalizedItemName = drop.item.replace(/[\s_]+/g, "").toLowerCase();
+                        if (normalizedItemName.includes(normalizedSearchInput)) {
+                            uniqueMatchingItems.add(drop.item);
+                        }
+                    });
+
+                    if (uniqueMatchingItems.size > 0) {
+                        const isP2P = p2pDropFiles.includes(file);
+                        results.push({
+                            monster: formatMonsterName(file.replace(".rs2", "")),
+                            file: file,
+                            matchCount: uniqueMatchingItems.size,
+                            isP2P: isP2P
+                        });
+                    }
+                }
+
+                // Sort results by number of matches
+                results.sort((a, b) => b.matchCount - a.matchCount);
+
+                if (results.length > 0) {
+                    searchResults.style.display = "block";
+                    results.forEach(result => {
+                        const resultItem = document.createElement("div");
+                        resultItem.className = "search-result-item";
+
+                        // Highlight P2P results differently
+                        const membershipClass = result.isP2P ? "p2p-result" : "f2p-result";
+                        resultItem.innerHTML = `
                     <div class="monster-name ${membershipClass}">${result.monster}</div>
                     <div class="monster-info">${result.matchCount} matches <span class="${membershipClass}">(${result.isP2P ? 'P2P' : 'F2P'})</span></div>
                 `;
-                
-                resultItem.onclick = () => {
-                    // Update the membership toggle to match the selected monster
-                    document.getElementById("membershipToggle").value = result.isP2P ? "p2p" : "f2p";
-                    // Trigger the membership change
-                    toggleMembership();
-                    // Select the monster in the dropdown
-                    document.getElementById("monsterDropdown").value = result.file;
-                    // Load its drop table
-                    loadDropTable();
-                    // Clear the search results
-                    searchResults.style.display = "none";
-                };
-                searchResults.appendChild(resultItem);
-            });
-        } else {
-            searchResults.style.display = "block";
-            const noResults = document.createElement("div");
-            noResults.className = "search-result-item";
-            noResults.textContent = "No results found.";
-            searchResults.appendChild(noResults);
+
+                        resultItem.onclick = () => {
+                            // Update the membership toggle to match the selected monster
+                            document.getElementById("membershipToggle").value = result.isP2P ? "p2p" : "f2p";
+                            // Trigger the membership change
+                            toggleMembership();
+                            // Select the monster in the dropdown
+                            document.getElementById("monsterDropdown").value = result.file;
+                            // Load its drop table
+                            loadDropTable();
+                            // Clear the search results
+                            searchResults.style.display = "none";
+                        };
+                        searchResults.appendChild(resultItem);
+                    });
+                } else {
+                    searchResults.style.display = "block";
+                    const noResults = document.createElement("div");
+                    noResults.className = "search-result-item";
+                    noResults.textContent = "No results found.";
+                    searchResults.appendChild(noResults);
+                }
+            } catch (error) {
+                console.error("Error during search:", error);
+                searchResults.style.display = "block";
+                const errorMessage = document.createElement("div");
+                errorMessage.className = "search-result-item";
+                errorMessage.textContent = "An error occurred while searching.";
+                searchResults.appendChild(errorMessage);
+            }
         }
-    } catch (error) {
-        console.error("Error during search:", error);
-        searchResults.style.display = "block";
-        const errorMessage = document.createElement("div");
-        errorMessage.className = "search-result-item";
-        errorMessage.textContent = "An error occurred while searching.";
-        searchResults.appendChild(errorMessage);
-    }
-}
 
         // Add click event handlers for search functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const searchInput = document.getElementById("searchInput");
             const searchResults = document.getElementById("searchResults");
 
             // Show dropdown when clicking the search input
-            searchInput.addEventListener('click', function() {
+            searchInput.addEventListener('click', function () {
                 if (this.value.length >= 2) {
                     searchResults.style.display = "block";
                 }
             });
 
             // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
+            document.addEventListener('click', function (event) {
                 const isClickInside = searchInput.contains(event.target) || searchResults.contains(event.target);
                 if (!isClickInside) {
                     searchResults.style.display = "none";
@@ -1220,7 +1219,7 @@
             });
 
             // Prevent clicks inside the dropdown from closing it
-            searchResults.addEventListener('click', function(event) {
+            searchResults.addEventListener('click', function (event) {
                 event.stopPropagation();
             });
         });
@@ -1239,7 +1238,7 @@
                 const sortToggle = document.getElementById("sortToggle");
                 localStorage.setItem('sortPreference', sortToggle.value);
             }
-            
+
             if (dropdown.value) {
                 loadDropTable();
             }
@@ -1359,16 +1358,66 @@
         }
 
         // Add event listener for the save settings toggle
-        document.getElementById("saveSettingsToggle").addEventListener("change", function() {
+        document.getElementById("saveSettingsToggle").addEventListener("change", function () {
             // Save the toggle state itself
             localStorage.setItem('saveSettingsEnabled', this.checked);
-            
+
             if (!this.checked) {
                 // Clear saved preferences when toggle is turned off
                 localStorage.removeItem('membershipPreference');
                 localStorage.removeItem('sortPreference');
             }
         });
+
+        // Function to show migration popup
+        function showMigrationPopup() {
+            // Check if user has already dismissed the popup
+            if (localStorage.getItem('migrationPopupDismissed') === 'true') {
+                return;
+            }
+
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'migration-overlay';
+
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'migration-popup';
+            popup.innerHTML = `
+        <div class="migration-popup-header">
+            IMPORTANT NOTICE
+        </div>
+        <div class="migration-popup-content">
+            This page has been migrated to <strong>2004hq.com</strong><br><br>
+            This page will no longer be updated with new content.<br>
+            Please update your bookmarks to the new site.
+        </div>
+        <div class="migration-popup-buttons">
+            <button class="migration-popup-button migration-popup-button-red" onclick="window.location.href='https://2004hq.com'">
+                Go to 2004HQ
+            </button>
+            <button class="migration-popup-button migration-popup-button-gray" onclick="closeMigrationPopup()">
+                Continue Here
+            </button>
+        </div>
+    `;
+
+            // Add to document
+            document.body.appendChild(overlay);
+            document.body.appendChild(popup);
+        }
+
+        // Function to close migration popup
+        function closeMigrationPopup() {
+            const popup = document.querySelector('.migration-popup');
+            const overlay = document.querySelector('.migration-overlay');
+
+            if (popup) popup.remove();
+            if (overlay) overlay.remove();
+
+            // Remember user's choice to dismiss the popup
+            localStorage.setItem('migrationPopupDismissed', 'true');
+        }
 
         window.onload = async () => {
             showLoader();
@@ -1378,16 +1427,19 @@
             }
             populateDropdown();
             enableUI();
-            
+
             // Restore the save settings toggle state
             const saveSettingsEnabled = localStorage.getItem('saveSettingsEnabled');
             if (saveSettingsEnabled !== null) {
-                document.getElementById("saveSettingsToggle").checked = saveSettingsEnabled === 'true';
+                document.getElementById('saveSettingsToggle').checked = saveSettingsEnabled === 'true';
             }
-            
+
             // Restore user preferences after UI is enabled
             restoreUserPreferences();
             hideLoader();
+
+            // Show migration popup after everything is loaded
+            showMigrationPopup();
         };
     </script>
 </body>
